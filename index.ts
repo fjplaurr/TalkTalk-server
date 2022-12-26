@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === 'development') {
 import * as express from 'express';
 import * as cors from 'cors';
 import config from './config';
+import usersRoutes from './users/users.routes.config';
 
 // Initializes express application
 const app = express();
@@ -15,6 +16,9 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Routes
+app.use('/users', usersRoutes);
 
 // Server listening
 app.listen(config.PORT, () =>
