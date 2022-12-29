@@ -67,11 +67,9 @@ class MongoService {
   }
 
   async readMany(queryDocument: Partial<Document>) {
-    console.log('this.collection', this.collection);
     if (this.collection !== null) {
       const cursor = await this.collection.find(queryDocument);
       const foundDocuments = await cursor.toArray();
-      console.log({ foundDocuments });
       return foundDocuments;
     }
     return null;
