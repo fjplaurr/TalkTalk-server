@@ -1,4 +1,6 @@
 import UsersDao from './users.dao';
+import { CreateUserDto } from './dto/create';
+import { PatchUserDto } from './dto/patch';
 
 class UsersService {
   async readAll() {
@@ -7,6 +9,18 @@ class UsersService {
 
   async readById(id: string) {
     return UsersDao.readById(id);
+  }
+
+  async create(resource: CreateUserDto) {
+    return UsersDao.create(resource);
+  }
+
+  async updateById(id: string, resource: PatchUserDto) {
+    return UsersDao.updateById(id, resource);
+  }
+
+  async deleteById(id: string) {
+    return UsersDao.deleteById(id);
   }
 }
 
