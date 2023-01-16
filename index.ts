@@ -9,6 +9,7 @@ import * as express from 'express';
 import * as cors from 'cors';
 import config from './config';
 import usersRoutes from './users/users.routes.config';
+import postsRoutes from './posts/posts.routes.config';
 
 // Initializes express application
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 
 // Routes
 app.use('/users', usersRoutes);
+app.use('/posts', postsRoutes);
 
 // Server listening
 app.listen(config.PORT, () =>
