@@ -1,15 +1,16 @@
 /* eslint-disable import/first */
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 if (process.env.NODE_ENV === 'development') {
   dotenv.config();
 }
 
-import * as express from 'express';
-import * as cors from 'cors';
+import express from 'express';
+import cors from 'cors';
 import config from './config';
 import usersRoutes from './users/users.routes.config';
 import postsRoutes from './posts/posts.routes.config';
+import authRoutes from './auth/auth.routes.config';
 
 // Initializes express application
 const app = express();
