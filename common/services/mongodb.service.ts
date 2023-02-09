@@ -17,14 +17,17 @@ class MongoService {
     this.collection = null;
     this.url = URL;
     this.databaseName = DATABASE_NAME;
+    this.connectWithRetry();
   }
 
-  async setCollection(collectionName: string) {
-    if (this.database === null) {
-      // First call to setCollection. The connection hast not been set yet.
-      await this.connectWithRetry();
+  setCollection(collectionName: string) {
+    if (this.database !== null) {
+      try {
+        this.collection = this.database.collection<Document>(collectionName);
+      } catch (err) {
+        console.log(`It was not possible to set a collection:`, err);
+      }
     }
-    this.collection = this.database!.collection<Document>(collectionName);
   }
 
   async connectWithRetry() {

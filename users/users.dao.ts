@@ -1,24 +1,24 @@
-import * as shortid from 'shortid';
+import shortid from 'shortid';
 import MongoService from '../common/services/mongodb.service';
 import { CreateUserDto } from './dto/create';
 import { PatchUserDto } from './dto/patch';
 import { PutUserDto } from './dto/put';
 
+const COLLECTION_NAME = 'users';
 class UsersDao {
-  constructor() {
-    MongoService.setCollection('users');
-  }
-
   async readAll() {
+    MongoService.setCollection(COLLECTION_NAME);
     const documents = await MongoService.readMany({});
     return documents;
   }
 
   async readById(id: string) {
+    MongoService.setCollection(COLLECTION_NAME);
     return MongoService.readOne({ _id: id });
   }
 
   async create(userFields: CreateUserDto) {
+    MongoService.setCollection(COLLECTION_NAME);
     const id = shortid.generate();
     MongoService.create({
       ...userFields,
@@ -28,10 +28,12 @@ class UsersDao {
   }
 
   async updateById(id: string, userFields: PatchUserDto | PutUserDto) {
+    MongoService.setCollection(COLLECTION_NAME);
     return MongoService.update({ _id: id }, userFields);
   }
 
   async deleteById(id: string) {
+    MongoService.setCollection(COLLECTION_NAME);
     return MongoService.delete({ _id: id });
   }
 }
