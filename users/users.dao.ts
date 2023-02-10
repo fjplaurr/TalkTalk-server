@@ -36,6 +36,12 @@ class UsersDao {
     MongoService.setCollection(COLLECTION_NAME);
     return MongoService.delete({ _id: id });
   }
+
+  async getUserByEmailWithPassword(email: string) {
+    MongoService.setCollection(COLLECTION_NAME);
+    const document = await MongoService.readOne({ email });
+    return document;
+  }
 }
 
 export default new UsersDao();

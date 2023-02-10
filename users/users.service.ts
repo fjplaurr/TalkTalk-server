@@ -22,6 +22,10 @@ class UsersService {
   async deleteById(id: string) {
     return UsersDao.deleteById(id);
   }
+
+  async getUserByEmailWithPassword(email: string) {
+    return UsersDao.getUserByEmailWithPassword(email);
+  }
 }
 
 export default new UsersService();

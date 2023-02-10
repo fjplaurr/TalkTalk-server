@@ -22,6 +22,7 @@ app.use(express.json());
 // Routes
 app.use('/users', usersRoutes);
 app.use('/posts', postsRoutes);
+app.use('/auth', authRoutes);
 
 // Server listening
 app.listen(config.PORT, () =>
