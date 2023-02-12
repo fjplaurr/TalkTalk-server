@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  api:
+    image: fjplaurr/talktalk-server
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 5002:5002
+    environment:
+      MONGO_URI: ${MONGO_URI}
+      API_PORT: 5002

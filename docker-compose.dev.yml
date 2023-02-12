@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  api:
+    image: fjplaurr/talktalk-server
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/app
+      - exclude:/app/node_modules
+      - exclude:/app/dist
+    ports:
+      - 5002:5002
+      - 9229:9229 # For debugging
+    environment:
+      MONGO_URI: ${MONGO_URI}
+      API_PORT: 5002
+  api_mongo:
+    image: mongo:latest
+    ports:
+      - 27018:27017
+volumes:
+  exclude:
