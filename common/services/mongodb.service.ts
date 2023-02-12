@@ -1,6 +1,6 @@
 import { Collection, Db, Document, MongoClient } from 'mongodb';
 
-const URL = 'mongodb://localhost:27017';
+const URL = process.env.MONGO_URI!;
 const DATABASE_NAME = 'api-db';
 
 class MongoService {

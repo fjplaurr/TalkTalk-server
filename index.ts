@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import config from './config';
 import usersRoutes from './users/users.routes.config';
 import postsRoutes from './posts/posts.routes.config';
 import authRoutes from './auth/auth.routes.config';
@@ -18,6 +17,6 @@ app.use('/posts', postsRoutes);
 app.use('/auth', authRoutes);
 
 // Server listening
-app.listen(config.PORT, () =>
-  console.log(`Server listening on port ${config.PORT}`)
+app.listen(process.env.API_PORT, () =>
+  console.log(`Server listening on port ${process.env.API_PORT}`)
 );
