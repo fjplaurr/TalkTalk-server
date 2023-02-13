@@ -42,6 +42,32 @@ class UsersDao {
     const document = await MongoService.readOne({ email });
     return document;
   }
+
+  async readFollowing(id: string) {
+    MongoService.setCollection(COLLECTION_NAME);
+
+    // Aggregation stages
+    const matchUserId = { _id: id };
+    const lookupFollowingUsers = {
+      from: 'users',
+      localField: 'following',
+      foreignField: '_id',
+      as: 'following_users',
+    };
+    const unwindFollowingUsers = { path: '$following_users' };
+    const projectRename = { user: '$following_users' };
+    const projectExclude = { _id: 0, 'user.password': 0 };
+    const pipeline = [
+      { $match: matchUserId },
+      { $lookup: lookupFollowingUsers },
+      { $unwind: unwindFollowingUsers },
+      { $project: projectRename },
+      { $project: projectExclude },
+    ];
+
+    const documents = await MongoService.aggregate(pipeline);
+    return documents;
+  }
 }
 
 export default new UsersDao();

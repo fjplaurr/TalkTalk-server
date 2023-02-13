@@ -26,6 +26,10 @@ class UsersService {
   async getUserByEmailWithPassword(email: string) {
     return UsersDao.getUserByEmailWithPassword(email);
   }
+
+  async readFollowing(id: string) {
+    return UsersDao.readFollowing(id);
+  }
 }
 
 export default new UsersService();

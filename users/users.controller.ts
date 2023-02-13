@@ -31,6 +31,11 @@ class UsersController {
     await UsersService.deleteById(req.params.id);
     res.status(204).send();
   }
+
+  async readFollowing(req: Request, res: Response) {
+    const users = await UsersService.readFollowing(req.params.id);
+    res.status(200).send(users);
+  }
 }
 
 export default new UsersController();

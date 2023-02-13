@@ -10,6 +10,7 @@ router.get('/', UsersController.readAll);
 router.patch('/:id', UsersController.updateById);
 router.delete('/:id', UsersController.deleteById);
 
+router.get('/:id/following', UsersController.readFollowing);
 router.get('/:id/posts', PostsController.readPostsByUserId);
 
 export default router;

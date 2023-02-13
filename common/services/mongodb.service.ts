@@ -93,8 +93,17 @@ class MongoService {
 
   async delete<T extends Document>(queryDocument: Partial<T>) {
     if (this.collection !== null) {
-      const deletedResult = await this.collection?.deleteOne(queryDocument);
-      return deletedResult;
+      const deletedDocument = await this.collection.deleteOne(queryDocument);
+      return deletedDocument;
+    }
+    return null;
+  }
+
+  async aggregate(pipeline: Document[]) {
+    if (this.collection !== null) {
+      const cursor = await this.collection.aggregate(pipeline);
+      const aggregatedDocuments = await cursor.toArray();
+      return aggregatedDocuments;
     }
     return null;
   }
