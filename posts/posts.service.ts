@@ -22,6 +22,10 @@ class PostsService {
   async deleteById(id: string) {
     return PostsDao.deleteById(id);
   }
+
+  async readPostsByUserId(authorId: string) {
+    return PostsDao.readPostsByUserId(authorId);
+  }
 }
 
 export default new PostsService();

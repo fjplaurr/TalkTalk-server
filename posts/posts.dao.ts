@@ -36,6 +36,11 @@ class PostsDao {
     MongoService.setCollection(COLLECTION_NAME);
     return MongoService.delete({ _id: id });
   }
+
+  async readPostsByUserId(authorId: string) {
+    const documents = await MongoService.readMany({ authorId });
+    return documents;
+  }
 }
 
 export default new PostsDao();

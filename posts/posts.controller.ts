@@ -30,6 +30,10 @@ class PostsController {
     await PostsService.deleteById(req.params.id);
     res.status(204).send();
   }
+
+  async readPostsByUserId(authorId: string) {
+    return PostsService.readPostsByUserId(authorId);
+  }
 }
 
 export default new PostsController();
