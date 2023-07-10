@@ -1,5 +1,5 @@
 import shortid from 'shortid';
-import MongoService from '../common/services/mongodb.service';
+import MongoService from '../common/services/mongodb/mongodb.service';
 import { CreateUserDto } from './dto/create';
 import { PatchUserDto } from './dto/patch';
 import { PutUserDto } from './dto/put';

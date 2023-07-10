@@ -3,6 +3,7 @@ import cors from 'cors';
 import usersRoutes from './users/users.routes.config';
 import postsRoutes from './posts/posts.routes.config';
 import authRoutes from './auth/auth.routes.config';
+import mongodbRoutes from './common/services/mongodb/mongodb.routes.config';
 
 // Initializes express application
 const app = express();
@@ -15,6 +16,9 @@ app.use(express.json());
 app.use('/users', usersRoutes);
 app.use('/posts', postsRoutes);
 app.use('/auth', authRoutes);
+if (process.env.NODE_ENV === 'development') {
+  app.use('/mongodb', mongodbRoutes);
+}
 
 // Server listening
 app.listen(process.env.API_PORT, () =>

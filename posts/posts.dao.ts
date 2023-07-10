@@ -1,10 +1,11 @@
 import shortid from 'shortid';
-import MongoService from '../common/services/mongodb.service';
+import MongoService from '../common/services/mongodb/mongodb.service';
 import { CreatePostDto } from './dto/create';
 import { PatchPostDto } from './dto/patch';
 import { PutPostDto } from './dto/put';
 
 const COLLECTION_NAME = 'posts';
+
 class PostsDao {
   async readAll() {
     MongoService.setCollection(COLLECTION_NAME);

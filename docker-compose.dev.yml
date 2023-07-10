@@ -15,6 +15,7 @@ services:
     environment:
       MONGO_URI: ${MONGO_URI}
       API_PORT: 5002
+      NODE_ENV: "development"
   api_mongo:
     image: mongo:latest
     ports:
