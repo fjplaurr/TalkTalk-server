@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - 5002:5002
+      - 5002:${API_PORT}
     environment:
       MONGO_URI: ${MONGO_URI}
-      API_PORT: 5002
+      API_PORT: ${API_PORT}

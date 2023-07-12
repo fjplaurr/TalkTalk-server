@@ -10,11 +10,11 @@ services:
       - exclude:/app/node_modules
       - exclude:/app/dist
     ports:
-      - 5002:5002
+      - 5002:${API_PORT}
       - 9229:9229 # For debugging
     environment:
       MONGO_URI: ${MONGO_URI}
-      API_PORT: 5002
+      API_PORT: ${API_PORT}
       NODE_ENV: "development"
   api_mongo:
     image: mongo:latest
