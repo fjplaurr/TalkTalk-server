@@ -1,5 +1,5 @@
 {
-  "name": "TalkTalk-server",
+  "name": "talktalk-server",
   "version": "1.0.0",
   "description": "backend done with expressjs for TalkTalk",
   "main": "dist/index.js",
