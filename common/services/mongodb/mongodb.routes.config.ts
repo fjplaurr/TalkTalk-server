@@ -1,9 +1,9 @@
 import express from 'express';
-import MongoController from './mongodb.controller';
+import MongoDbController from './mongodb.controller';
 
 const router = express.Router();
 
-router.post('/drop', MongoController.dropDB);
-router.post('/seed', MongoController.seedDB);
+router.post('/drop', MongoDbController.dropDB);
+router.post('/seed', MongoDbController.seedDB);
 
 export default router;

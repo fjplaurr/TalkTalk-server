@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import MongoService from './mongodb.service';
+import MongoDbService from './mongodb.service';
 
-class MongoController {
+class MongoDbController {
   async dropDB(req: Request, res: Response) {
     try {
-      await MongoService.dropDB();
+      await MongoDbService.dropDB();
       return res.status(204).send();
     } catch (err) {
       console.log(`It was not possible to set a drop the database:`, err);
@@ -14,7 +14,7 @@ class MongoController {
 
   async seedDB(req: Request, res: Response) {
     try {
-      await MongoService.seedDB();
+      await MongoDbService.seedDB();
       return res.status(201).send();
     } catch (err) {
       console.log(`It was not possible to reseed the database:`, err);
@@ -23,4 +23,4 @@ class MongoController {
   }
 }
 
-export default new MongoController();
+export default new MongoDbController();

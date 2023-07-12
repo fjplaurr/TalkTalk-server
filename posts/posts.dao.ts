@@ -1,5 +1,5 @@
 import shortid from 'shortid';
-import MongoService from '../common/services/mongodb/mongodb.service';
+import MongoDbService from '../common/services/mongodb/mongodb.service';
 import { CreatePostDto } from './dto/create';
 import { PatchPostDto } from './dto/patch';
 import { PutPostDto } from './dto/put';
@@ -8,20 +8,20 @@ const COLLECTION_NAME = 'posts';
 
 class PostsDao {
   async readAll() {
-    MongoService.setCollection(COLLECTION_NAME);
-    const documents = await MongoService.readMany({});
+    MongoDbService.setCollection(COLLECTION_NAME);
+    const documents = await MongoDbService.readMany({});
     return documents;
   }
 
   async readById(id: string) {
-    MongoService.setCollection(COLLECTION_NAME);
-    return MongoService.readOne({ _id: id });
+    MongoDbService.setCollection(COLLECTION_NAME);
+    return MongoDbService.readOne({ _id: id });
   }
 
   async create(postsFields: CreatePostDto) {
-    MongoService.setCollection(COLLECTION_NAME);
+    MongoDbService.setCollection(COLLECTION_NAME);
     const id = shortid.generate();
-    MongoService.create({
+    MongoDbService.create({
       ...postsFields,
       _id: id,
     });
@@ -29,17 +29,17 @@ class PostsDao {
   }
 
   async updateById(id: string, postsFields: PatchPostDto | PutPostDto) {
-    MongoService.setCollection(COLLECTION_NAME);
-    return MongoService.update({ _id: id }, postsFields);
+    MongoDbService.setCollection(COLLECTION_NAME);
+    return MongoDbService.update({ _id: id }, postsFields);
   }
 
   async deleteById(id: string) {
-    MongoService.setCollection(COLLECTION_NAME);
-    return MongoService.delete({ _id: id });
+    MongoDbService.setCollection(COLLECTION_NAME);
+    return MongoDbService.delete({ _id: id });
   }
 
   async readPostsByUserId(authorId: string) {
-    const documents = await MongoService.readMany({ authorId });
+    const documents = await MongoDbService.readMany({ authorId });
     return documents;
   }
 }

@@ -1,5 +1,5 @@
 import shortid from 'shortid';
-import MongoService from '../common/services/mongodb/mongodb.service';
+import MongoDbService from '../common/services/mongodb/mongodb.service';
 import { CreateUserDto } from './dto/create';
 import { PatchUserDto } from './dto/patch';
 import { PutUserDto } from './dto/put';
@@ -7,20 +7,20 @@ import { PutUserDto } from './dto/put';
 const COLLECTION_NAME = 'users';
 class UsersDao {
   async readAll() {
-    MongoService.setCollection(COLLECTION_NAME);
-    const documents = await MongoService.readMany({});
+    MongoDbService.setCollection(COLLECTION_NAME);
+    const documents = await MongoDbService.readMany({});
     return documents;
   }
 
   async readById(id: string) {
-    MongoService.setCollection(COLLECTION_NAME);
-    return MongoService.readOne({ _id: id });
+    MongoDbService.setCollection(COLLECTION_NAME);
+    return MongoDbService.readOne({ _id: id });
   }
 
   async create(userFields: CreateUserDto) {
-    MongoService.setCollection(COLLECTION_NAME);
+    MongoDbService.setCollection(COLLECTION_NAME);
     const id = shortid.generate();
-    MongoService.create({
+    MongoDbService.create({
       ...userFields,
       _id: id,
     });
@@ -28,23 +28,23 @@ class UsersDao {
   }
 
   async updateById(id: string, userFields: PatchUserDto | PutUserDto) {
-    MongoService.setCollection(COLLECTION_NAME);
-    return MongoService.update({ _id: id }, userFields);
+    MongoDbService.setCollection(COLLECTION_NAME);
+    return MongoDbService.update({ _id: id }, userFields);
   }
 
   async deleteById(id: string) {
-    MongoService.setCollection(COLLECTION_NAME);
-    return MongoService.delete({ _id: id });
+    MongoDbService.setCollection(COLLECTION_NAME);
+    return MongoDbService.delete({ _id: id });
   }
 
   async getUserByEmailWithPassword(email: string) {
-    MongoService.setCollection(COLLECTION_NAME);
-    const document = await MongoService.readOne({ email });
+    MongoDbService.setCollection(COLLECTION_NAME);
+    const document = await MongoDbService.readOne({ email });
     return document;
   }
 
   async readFollowing(id: string) {
-    MongoService.setCollection(COLLECTION_NAME);
+    MongoDbService.setCollection(COLLECTION_NAME);
 
     // Aggregation stages
     const matchUserId = { _id: id };
@@ -65,7 +65,7 @@ class UsersDao {
       { $project: projectExclude },
     ];
 
-    const documents = await MongoService.aggregate(pipeline);
+    const documents = await MongoDbService.aggregate(pipeline);
     return documents;
   }
 }

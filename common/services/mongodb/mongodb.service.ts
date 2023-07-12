@@ -4,7 +4,7 @@ import { seeds } from './seeds';
 const URL = process.env.MONGO_URI!;
 const DATABASE_NAME = 'api-db';
 
-class MongoService {
+class MongoDbService {
   connection: MongoClient | null;
   private database: Db | null;
   private collection: Collection<Document> | null;
@@ -134,4 +134,4 @@ class MongoService {
   }
 }
 
-export default new MongoService();
+export default new MongoDbService();
