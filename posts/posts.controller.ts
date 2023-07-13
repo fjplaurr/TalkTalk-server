@@ -31,8 +31,9 @@ class PostsController {
     res.status(204).send();
   }
 
-  async readPostsByUserId(authorId: string) {
-    return PostsService.readPostsByUserId(authorId);
+  async readPostsByUserId(req: Request, res: Response) {
+    const posts = await PostsService.readPostsByUserId(req.params.id);
+    res.status(200).send(posts);
   }
 }
 

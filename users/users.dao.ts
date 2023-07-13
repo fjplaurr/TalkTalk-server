@@ -4,21 +4,23 @@ import { CreateUserDto } from './dto/create';
 import { PatchUserDto } from './dto/patch';
 import { PutUserDto } from './dto/put';
 
-const COLLECTION_NAME = 'users';
 class UsersDao {
+  collectionName;
+
+  constructor() {
+    this.collectionName = 'users';
+  }
+
   async readAll() {
-    MongoDbService.setCollection(COLLECTION_NAME);
     const documents = await MongoDbService.readMany({});
     return documents;
   }
 
   async readById(id: string) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     return MongoDbService.readOne({ _id: id });
   }
 
   async create(userFields: CreateUserDto) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     const id = shortid.generate();
     MongoDbService.create({
       ...userFields,
@@ -28,24 +30,19 @@ class UsersDao {
   }
 
   async updateById(id: string, userFields: PatchUserDto | PutUserDto) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     return MongoDbService.update({ _id: id }, userFields);
   }
 
   async deleteById(id: string) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     return MongoDbService.delete({ _id: id });
   }
 
   async getUserByEmailWithPassword(email: string) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     const document = await MongoDbService.readOne({ email });
     return document;
   }
 
   async readFollowing(id: string) {
-    MongoDbService.setCollection(COLLECTION_NAME);
-
     // Aggregation stages
     const matchUserId = { _id: id };
     const lookupFollowingUsers = {
@@ -70,4 +67,13 @@ class UsersDao {
   }
 }
 
-export default new UsersDao();
+const usersDao = new UsersDao();
+
+const usersDaoProxy = new Proxy(usersDao, {
+  get(target: typeof usersDao, prop: keyof typeof usersDao) {
+    MongoDbService.setCollection(target.collectionName);
+    return target[prop];
+  },
+});
+
+export default usersDaoProxy;

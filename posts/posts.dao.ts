@@ -4,22 +4,23 @@ import { CreatePostDto } from './dto/create';
 import { PatchPostDto } from './dto/patch';
 import { PutPostDto } from './dto/put';
 
-const COLLECTION_NAME = 'posts';
-
 class PostsDao {
+  collectionName;
+
+  constructor() {
+    this.collectionName = 'posts';
+  }
+
   async readAll() {
-    MongoDbService.setCollection(COLLECTION_NAME);
     const documents = await MongoDbService.readMany({});
     return documents;
   }
 
   async readById(id: string) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     return MongoDbService.readOne({ _id: id });
   }
 
   async create(postsFields: CreatePostDto) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     const id = shortid.generate();
     MongoDbService.create({
       ...postsFields,
@@ -29,12 +30,10 @@ class PostsDao {
   }
 
   async updateById(id: string, postsFields: PatchPostDto | PutPostDto) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     return MongoDbService.update({ _id: id }, postsFields);
   }
 
   async deleteById(id: string) {
-    MongoDbService.setCollection(COLLECTION_NAME);
     return MongoDbService.delete({ _id: id });
   }
 
@@ -44,4 +43,13 @@ class PostsDao {
   }
 }
 
-export default new PostsDao();
+const postsDao = new PostsDao();
+
+const postsDaoProxy = new Proxy(postsDao, {
+  get(target: typeof postsDao, prop: keyof typeof postsDao) {
+    MongoDbService.setCollection(target.collectionName);
+    return target[prop];
+  },
+});
+
+export default postsDaoProxy;
