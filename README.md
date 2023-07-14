@@ -33,18 +33,40 @@ Make sure your machine has installed: [git](https://git-scm.com/), [docker](http
     curl -X POST http://localhost:5002/mongodb/seed
     ```    
 
-## Usage
+## API Endpoints
 You can use [Postman](https://www.postman.com/) or another software to use the next API endpoints. You can also use the `curl` command in your terminal.
 
-### API Endpoints
+#### <b><u>Users</u></b>
 | HTTP Verbs | Endpoints | Action |
 | --- | --- | --- |
 | GET | /users | To retrieve all users |
 | GET | /users/:userId | To retrieve an existing user |
+| POST | /users | To save a new user  |
 | POST | /users/:userId/posts | To retrieve all the posts from an user  |
 | PATCH | /users/:userId | To edit an user |
 | DELETE | /users/:userId | To delete an user |
 | GET | /users/:userId/following | To retieve all the users being followed by an user |
+
+#### <b><u>Posts</u></b>
+| HTTP Verbs | Endpoints | Action |
+| --- | --- | --- |
+| GET | /posts | To retrieve all posts |
+| GET | /posts/:postId | To retrieve an existing post |
+| POST | /posts | To save a new post |
+| PATCH | /posts/:postId | To edit a post |
+| DELETE | /users/:postId | To delete a post |
+
+#### <b><u>Authentication</u></b>
+| HTTP Verbs | Endpoints | Action |
+| --- | --- | --- |
+| POST | /auth | To authenticate an user |
+| POST | /auth/refresh-token | To refresh a token of an user |
+
+#### <b><u>MongoDB</u></b>
+| HTTP Verbs | Endpoints | Action |
+| --- | --- | --- |
+| POST | /mongodb/drop | To drop the entire database |
+| POST | /mongodb/seed | To seed some demo data |
 
 ### Technologies Used
 
