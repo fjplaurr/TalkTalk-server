@@ -16,6 +16,7 @@ services:
       MONGO_URI: ${MONGO_URI}
       API_PORT: ${API_PORT}
       NODE_ENV: "development"
+      AUTHENTICATION_SECRET_KEY: ${AUTHENTICATION_SECRET_KEY}
   api_mongo:
     image: mongo:latest
     ports:
