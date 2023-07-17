@@ -60,7 +60,6 @@ You can use [Postman](https://www.postman.com/) or another software to use the n
 | HTTP Verbs | Endpoints | Action |
 | --- | --- | --- |
 | POST | /auth | To authenticate an user |
-| POST | /auth/refresh-token | To refresh a token of an user |
 
 #### <b><u>MongoDB</u></b>
 | HTTP Verbs | Endpoints | Action |
