@@ -8,7 +8,7 @@ class AuthMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const user: any = await usersService.getUserByEmailWithPassword(req.body.email);
+    const user: any = await usersService.getUserByEmail(req.body.email);
 
     if (user) {
       const passwordHash = user.password;

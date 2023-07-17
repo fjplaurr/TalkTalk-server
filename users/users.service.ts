@@ -23,8 +23,8 @@ class UsersService {
     return UsersDao.deleteById(id);
   }
 
-  async getUserByEmailWithPassword(email: string) {
-    return UsersDao.getUserByEmailWithPassword(email);
+  async getUserByEmail(email: string) {
+    return UsersDao.getUserByEmail(email);
   }
 
   async readFollowing(id: string) {

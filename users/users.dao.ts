@@ -37,7 +37,7 @@ class UsersDao {
     return MongoDbService.delete({ _id: id });
   }
 
-  async getUserByEmailWithPassword(email: string) {
+  async getUserByEmail(email: string) {
     const document = await MongoDbService.readOne({ email });
     return document;
   }

@@ -3,7 +3,7 @@ import UsersService from '../users.service';
 
 class UsersMiddleware {
   async validateSameEmailDoesntExist(email: string) {
-    const user = await UsersService.getUserByEmailWithPassword(email);
+    const user = await UsersService.getUserByEmail(email);
     if (user) {
       throw new Error(`User email already exists`);
     }
