@@ -29,23 +29,37 @@ Make sure your machine has installed: [git](https://git-scm.com/), [docker](http
    ```
 
 4. Build the images and start the containers.
+
    ```sh
    docker compose -f docker-compose.dev.yml up
    ```
+
    The api should be running at the port defined by the variable `API_PORT` in the `.env` file (port 5002 if you did not modify it).
+
+   If the setup is successful, you will see the following message in your terminal: `Server listening on port 5002`
+
 5. Seed some data for demo purposes.
+
    ```sh
    curl -X POST http://localhost:5002/mongodb/seed
    ```
+
+6. Explore the available endpoints. For example, to retrieve all the users from the seeded data, use the following command:
+   ```sh
+   curl http://localhost:5002/users
+   ```
+   You will see a list of users from the seed data.
 
 ## API Endpoints
 
 You have different options to interact with the API:
 
-- [Postman](https://www.postman.com/) or similar software: Use Postman or a similar tool with a user-friendly interface to send requests to the API endpoints.
-- `curl` command: Use the `curl` command in your terminal to send HTTP requests directly.
+- <b>[Postman](https://www.postman.com/)</b>: Use Postman to send requests to the API. Import the API endpoints in your workspace by clicking `Run in Postman` in this [link](https://documenter.getpostman.com/view/8562186/2s946h9sM4). This will automatically import the endpoints into your Postman workspace, allowing you to quickly start making requests.
+- <b>cUrl command</b>: Use the `curl` command in your terminal to send HTTP requests.
 
-#### <b><u>Users</u></b>
+Choose the method that suits your preference and workflow.
+
+#### <b><u>Users Endpoints</u></b>
 
 | HTTP Verbs | Endpoints                | Action                                  |
 | ---------- | ------------------------ | --------------------------------------- |
@@ -57,7 +71,7 @@ You have different options to interact with the API:
 | DELETE     | /users/:userId           | Delete a user                           |
 | GET        | /users/:userId/following | Retrieve users being followed by a user |
 
-#### <b><u>Posts</u></b>
+#### <b><u>Posts Endpoints</u></b>
 
 | HTTP Verbs | Endpoints      | Action             |
 | ---------- | -------------- | ------------------ |
@@ -67,7 +81,7 @@ You have different options to interact with the API:
 | PATCH      | /posts/:postId | Edit a post        |
 | DELETE     | /users/:postId | Delete a post      |
 
-#### <b><u>Authentication</u></b>
+#### <b><u>Authentication Endpoints</u></b>
 
 | HTTP Verbs | Endpoints                  | Action                                      |
 | ---------- | -------------------------- | ------------------------------------------- |
