@@ -1,8 +1,6 @@
 import shortid from 'shortid';
 import MongoDbService from '../common/services/mongodb/mongodb.service';
-import { CreatePostDto } from './dto/create';
-import { PatchPostDto } from './dto/patch';
-import { PutPostDto } from './dto/put';
+import { CreatePostDto, PatchPostDto, PutPostDto } from './types/dto';
 
 class PostsDao {
   collectionName;

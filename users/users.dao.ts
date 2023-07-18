@@ -1,8 +1,6 @@
 import shortid from 'shortid';
 import MongoDbService from '../common/services/mongodb/mongodb.service';
-import { CreateUserDto } from './dto/create';
-import { PatchUserDto } from './dto/patch';
-import { PutUserDto } from './dto/put';
+import { CreateUserDto, PatchUserDto, PutUserDto } from './types/dto';
 
 class UsersDao {
   collectionName;

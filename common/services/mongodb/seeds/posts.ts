@@ -1,4 +1,4 @@
-import { Post } from '../../../../posts/posts.model';
+import { Post } from '../../../../posts/types/posts';
 
 const getPostsSeeds: () => Post[] = () => [
   {

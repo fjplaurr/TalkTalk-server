@@ -1,7 +1,6 @@
 import argon2 from 'argon2';
 import UsersDao from './users.dao';
-import { CreateUserDto } from './dto/create';
-import { PatchUserDto } from './dto/patch';
+import { CreateUserDto, PatchUserDto } from './types/dto';
 
 class UsersService {
   async readAll() {

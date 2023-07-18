@@ -1,6 +1,5 @@
 import PostsDao from './posts.dao';
-import { CreatePostDto } from './dto/create';
-import { PatchPostDto } from './dto/patch';
+import { CreatePostDto, PatchPostDto } from './types/dto';
 
 class PostsService {
   async readAll() {
