@@ -47,15 +47,15 @@ You have different options to interact with the API:
 
 #### <b><u>Users</u></b>
 
-| HTTP Verbs | Endpoints                | Action                                 |
-| ---------- | ------------------------ | -------------------------------------- |
-| GET        | /users                   | Retrieve all users                     |
-| GET        | /users/:userId           | Retrieve a user                        |
-| POST       | /users                   | Save a new user                        |
-| POST       | /users/:userId/posts     | Retrieve all posts from a user         |
-| PATCH      | /users/:userId           | Edit a user                            |
-| DELETE     | /users/:userId           | Delete a user                          |
-| GET        | /users/:userId/following | Retieve users being followed by a user |
+| HTTP Verbs | Endpoints                | Action                                  |
+| ---------- | ------------------------ | --------------------------------------- |
+| GET        | /users                   | Retrieve all users                      |
+| GET        | /users/:userId           | Retrieve a user                         |
+| POST       | /users                   | Save a new user                         |
+| POST       | /users/:userId/posts     | Retrieve all posts from a user          |
+| PATCH      | /users/:userId           | Edit a user                             |
+| DELETE     | /users/:userId           | Delete a user                           |
+| GET        | /users/:userId/following | Retrieve users being followed by a user |
 
 #### <b><u>Posts</u></b>
 
@@ -69,9 +69,11 @@ You have different options to interact with the API:
 
 #### <b><u>Authentication</u></b>
 
-| HTTP Verbs | Endpoints | Action              |
-| ---------- | --------- | ------------------- |
-| POST       | /auth     | Authenticate a user |
+| HTTP Verbs | Endpoints                  | Action                                      |
+| ---------- | -------------------------- | ------------------------------------------- |
+| POST       | /loginWithEmailAndPassword | Authenticate a user with email and password |
+| POST       | /loginWithToken            | Authenticate a user with access token       |
+| POST       | /signup                    | Sign up a new user                          |
 
 #### <b><u>MongoDB</u></b>
 
