@@ -7,7 +7,7 @@ class MongoDbController {
       await MongoDbService.dropDB();
       return res.status(204).send();
     } catch (err) {
-      console.log(`It was not possible to set a drop the database:`, err);
+      console.log(`It was not possible to drop the database:`, err);
       return res.status(422).send();
     }
   }
