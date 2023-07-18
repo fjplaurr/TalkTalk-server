@@ -20,7 +20,7 @@ class AuthController {
     const token = createJWT(req.body);
     const userId = await UsersService.create(req.body);
 
-    return res.status(201).send({ accessToken: token, id: userId });
+    return res.status(201).send({ accessToken: token, userId });
   }
 }
 

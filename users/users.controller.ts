@@ -32,8 +32,8 @@ class UsersController {
   }
 
   async readFollowing(req: Request, res: Response) {
-    const users = await UsersService.readFollowing(req.params.id);
-    res.status(200).send(users);
+    const usersIds = await UsersService.readFollowing(req.params.id);
+    res.status(200).send(usersIds);
   }
 }
 

@@ -44,26 +44,23 @@ class UsersDao {
 
   async readFollowing(id: string) {
     // Aggregation stages
-    const matchUserId = { _id: id };
-    const lookupFollowingUsers = {
-      from: 'users',
-      localField: 'following',
-      foreignField: '_id',
-      as: 'following_users',
-    };
-    const unwindFollowingUsers = { path: '$following_users' };
-    const projectRename = { user: '$following_users' };
-    const projectExclude = { _id: 0, 'user.password': 0 };
+    const $match = { _id: id };
+    const $unwind = { path: '$followingUsers' };
+    const $project = { id: '$followingUsers' };
+    const $group = { _id: null, ids: { $push: '$id' } };
+    const projectExcludeIds = { _id: 0 };
+
     const pipeline = [
-      { $match: matchUserId },
-      { $lookup: lookupFollowingUsers },
-      { $unwind: unwindFollowingUsers },
-      { $project: projectRename },
-      { $project: projectExclude },
+      { $match },
+      { $unwind },
+      { $project },
+      { $group },
+      { $project: projectExcludeIds },
     ];
 
     const documents = await MongoDbService.aggregate(pipeline);
-    return documents;
+
+    return documents && documents.length > 0 ? documents[0].ids : [];
   }
 }
 

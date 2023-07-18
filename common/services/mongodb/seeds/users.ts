@@ -8,6 +8,7 @@ const users: User[] = [
     firstName: 'John',
     lastName: 'Smith',
     permissionFlags: 0,
+    followingUsers: ['user_id2', 'user_id3'],
   },
   {
     _id: 'user_id2',
@@ -16,6 +17,7 @@ const users: User[] = [
     firstName: 'Emma',
     lastName: 'Johnson',
     permissionFlags: 0,
+    followingUsers: ['user_id1'],
   },
   {
     _id: 'user_id3',
@@ -24,6 +26,7 @@ const users: User[] = [
     firstName: 'Michael',
     lastName: 'Davis',
     permissionFlags: 0,
+    followingUsers: ['user_id2, user_id4'],
   },
   {
     _id: 'user_id4',
@@ -32,6 +35,7 @@ const users: User[] = [
     firstName: 'Olivia',
     lastName: 'Wilson',
     permissionFlags: 0,
+    followingUsers: ['user_id2, user_id3'],
   },
 ];
 
