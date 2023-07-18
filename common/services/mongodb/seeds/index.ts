@@ -1,4 +1,4 @@
-import { posts } from './posts';
+import { getPostsSeeds } from './posts';
 import { getUsersSeeds } from './users';
 import { User } from '../../../../users/users.model';
 import { Post } from '../../../../posts/posts.model';
@@ -9,7 +9,7 @@ const getSeeds: () => Promise<Seeds> = async () => {
   const seeds = [
     {
       collectionName: 'posts',
-      data: posts,
+      data: getPostsSeeds(),
     },
     {
       collectionName: 'users',

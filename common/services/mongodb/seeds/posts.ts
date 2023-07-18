@@ -1,6 +1,6 @@
 import { Post } from '../../../../posts/posts.model';
 
-const posts: Post[] = [
+const getPostsSeeds: () => Post[] = () => [
   {
     _id: 'post_id1',
     text: "Zephyr's eyes glimmered with mischievous curiosity as he ventured into the enchanted forest, where whispers of ancient secrets danced among the rustling leaves. The air was alive with a symphony of mystical creatures, their ethereal melodies blending with the soft breeze.",
@@ -21,4 +21,4 @@ const posts: Post[] = [
   },
 ];
 
-export { posts };
+export { getPostsSeeds };
