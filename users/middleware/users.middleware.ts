@@ -24,15 +24,6 @@ class UsersMiddleware {
         'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters.'
       ),
   ];
-
-  async extractUserId(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    req.body.id = req.params.userId;
-    next();
-  }
 }
 
 export default new UsersMiddleware();
