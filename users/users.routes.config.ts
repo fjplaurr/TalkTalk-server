@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/', [
   ...UsersMiddleware.createBodyValidations,
-  BodyValidationMiddleware.verifyBodyFieldsErrors,
+  BodyValidationMiddleware.validateRequest,
   UsersController.create,
 ]);
 

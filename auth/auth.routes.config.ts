@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/loginWithEmailAndPassword', [
   body('email').isEmail(),
   body('password').isString(),
-  BodyValidationMiddleware.verifyBodyFieldsErrors,
+  BodyValidationMiddleware.validateRequest,
   authMiddleware.verifyUserPassword,
   AuthController.createAccessToken,
 ]);
@@ -23,7 +23,7 @@ router.post('/loginWithToken', [
 
 router.post('/signup', [
   ...usersMiddleware.createBodyValidations,
-  BodyValidationMiddleware.verifyBodyFieldsErrors,
+  BodyValidationMiddleware.validateRequest,
   AuthController.signup,
 ]);
 
