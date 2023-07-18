@@ -1,6 +1,6 @@
 import express from 'express';
-import UsersService from '../users.service';
 import { body } from 'express-validator';
+import UsersService from '../users.service';
 
 class UsersMiddleware {
   async validateSameEmailDoesntExist(email: string) {

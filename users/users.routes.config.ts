@@ -1,5 +1,4 @@
 import express from 'express';
-import { body } from 'express-validator';
 import UsersController from './users.controller';
 import PostsController from '../posts/posts.controller';
 import UsersMiddleware from './middleware/users.middleware';
