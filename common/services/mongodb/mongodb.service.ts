@@ -1,5 +1,5 @@
 import { Collection, Db, Document, MongoClient } from 'mongodb';
-import { seeds } from './seeds';
+import { getSeeds } from './seeds';
 
 const URL = process.env.MONGO_URI!;
 const DATABASE_NAME = 'api-db';
@@ -126,6 +126,7 @@ class MongoDbService {
   async seedDB() {
     if (this.database !== null) {
       await this.dropDB();
+      const seeds = await getSeeds();
       seeds.forEach(async (seed) => {
         this.setCollection(seed.collectionName);
         await this.createMany(seed.data as Document[]);

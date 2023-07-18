@@ -1,10 +1,11 @@
+import argon2 from 'argon2';
 import { User } from '../../../../users/users.model';
 
-const users: User[] = [
+const getUsersSeeds: () => Promise<User[]> = async () => [
   {
     _id: 'user_id1',
     email: 'john@smith.xyz',
-    password: 'johnsmith',
+    password: await argon2.hash('johnsmith'),
     firstName: 'John',
     lastName: 'Smith',
     permissionFlags: 0,
@@ -13,7 +14,7 @@ const users: User[] = [
   {
     _id: 'user_id2',
     email: 'emma@johnson.xyz',
-    password: 'emmajohnson',
+    password: await argon2.hash('emmajohnson'),
     firstName: 'Emma',
     lastName: 'Johnson',
     permissionFlags: 0,
@@ -22,7 +23,7 @@ const users: User[] = [
   {
     _id: 'user_id3',
     email: 'michael@davis.xyz',
-    password: 'michaeldavis',
+    password: await argon2.hash('michaeldavis'),
     firstName: 'Michael',
     lastName: 'Davis',
     permissionFlags: 0,
@@ -31,7 +32,7 @@ const users: User[] = [
   {
     _id: 'user_id4',
     email: 'olivia@wilson.xyz',
-    password: 'oliviawilson',
+    password: await argon2.hash('oliviawilson'),
     firstName: 'Olivia',
     lastName: 'Wilson',
     permissionFlags: 0,
@@ -39,4 +40,4 @@ const users: User[] = [
   },
 ];
 
-export { users };
+export { getUsersSeeds };

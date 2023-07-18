@@ -1,15 +1,23 @@
 import { posts } from './posts';
-import { users } from './users';
+import { getUsersSeeds } from './users';
+import { User } from '../../../../users/users.model';
+import { Post } from '../../../../posts/posts.model';
 
-const seeds = [
-  {
-    collectionName: 'posts',
-    data: posts,
-  },
-  {
-    collectionName: 'users',
-    data: users,
-  },
-];
+type Seeds = { collectionName: string; data: (User | Post)[] }[];
 
-export { seeds };
+const getSeeds: () => Promise<Seeds> = async () => {
+  const seeds = [
+    {
+      collectionName: 'posts',
+      data: posts,
+    },
+    {
+      collectionName: 'users',
+      data: await getUsersSeeds(),
+    },
+  ];
+
+  return seeds;
+};
+
+export { getSeeds };

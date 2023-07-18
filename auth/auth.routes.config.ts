@@ -23,7 +23,6 @@ router.post('/loginWithToken', [
 
 router.post('/signup', [
   ...usersMiddleware.createBodyValidations,
-  BodyValidationMiddleware.validateRequest,
   AuthController.signup,
 ]);
 

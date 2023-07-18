@@ -1,6 +1,6 @@
-import express from 'express';
 import { body } from 'express-validator';
 import UsersService from '../users.service';
+import BodyValidationMiddleware from '../../common/middleware/body.validation.middleware';
 
 class UsersMiddleware {
   async validateSameEmailDoesntExist(email: string) {
@@ -23,6 +23,7 @@ class UsersMiddleware {
       .withMessage(
         'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters.'
       ),
+    BodyValidationMiddleware.validateRequest,
   ];
 }
 
