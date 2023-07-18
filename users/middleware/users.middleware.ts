@@ -19,6 +19,7 @@ class UsersMiddleware {
         minLength: 6,
         minNumbers: 0,
         minSymbols: 0,
+        minUppercase: 0,
       })
       .withMessage(
         'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters.'
