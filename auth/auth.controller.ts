@@ -1,20 +1,26 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import UsersService from '../users/users.service';
 
 const jwtSecret: string = process.env.AUTHENTICATION_SECRET_KEY!;
 const tokenExpirationInSeconds = 36000;
 
+const createJWT = (payload: object) =>
+  jwt.sign(payload, jwtSecret, {
+    expiresIn: tokenExpirationInSeconds,
+  });
 class AuthController {
-  async createJWT(req: Request, res: Response) {
-    try {
-      const token = jwt.sign(req.body, jwtSecret, {
-        expiresIn: tokenExpirationInSeconds,
-      });
-      return res.status(201).send({ accessToken: token });
-    } catch (err) {
-      console.log('createJWT error: ', err);
-      return res.status(500).send({ errors: err });
-    }
+  createAccessToken(req: Request, res: Response) {
+    const token = createJWT(req.body);
+
+    return res.status(201).send({ accessToken: token });
+  }
+
+  async signup(req: Request, res: Response) {
+    const token = createJWT(req.body);
+    const userId = await UsersService.create(req.body);
+
+    return res.status(201).send({ accessToken: token, id: userId });
   }
 }
 

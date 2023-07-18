@@ -1,5 +1,6 @@
 import express from 'express';
 import UsersService from '../users.service';
+import { body } from 'express-validator';
 
 class UsersMiddleware {
   async validateSameEmailDoesntExist(email: string) {
@@ -8,6 +9,21 @@ class UsersMiddleware {
       throw new Error(`User email already exists`);
     }
   }
+
+  createBodyValidations = [
+    body('email')
+      .isEmail()
+      .custom((email) => this.validateSameEmailDoesntExist(email)),
+    body('password')
+      .isStrongPassword({
+        minLength: 6,
+        minNumbers: 0,
+        minSymbols: 0,
+      })
+      .withMessage(
+        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters.'
+      ),
+  ];
 
   async extractUserId(
     req: express.Request,

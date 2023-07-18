@@ -1,3 +1,4 @@
+import argon2 from 'argon2';
 import UsersDao from './users.dao';
 import { CreateUserDto } from './dto/create';
 import { PatchUserDto } from './dto/patch';
@@ -12,7 +13,12 @@ class UsersService {
   }
 
   async create(resource: CreateUserDto) {
-    return UsersDao.create(resource);
+    const hashedPassword = await argon2.hash(resource.password);
+    const resourceWithHashedPassword = {
+      ...resource,
+      password: hashedPassword,
+    };
+    return UsersDao.create(resourceWithHashedPassword);
   }
 
   async updateById(id: string, resource: PatchUserDto) {

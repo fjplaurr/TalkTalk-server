@@ -8,18 +8,7 @@ import BodyValidationMiddleware from '../common/middleware/body.validation.middl
 const router = express.Router();
 
 router.post('/', [
-  body('email')
-    .isEmail()
-    .custom((email) => UsersMiddleware.validateSameEmailDoesntExist(email)),
-  body('password')
-    .isStrongPassword({
-      minLength: 6,
-      minNumbers: 0,
-      minSymbols: 0,
-    })
-    .withMessage(
-      'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters.'
-    ),
+  ...UsersMiddleware.createBodyValidations,
   BodyValidationMiddleware.verifyBodyFieldsErrors,
   UsersController.create,
 ]);
