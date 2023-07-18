@@ -8,7 +8,6 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     password: await argon2.hash('secret123'),
     firstName: 'John',
     lastName: 'Smith',
-    permissionFlags: 0,
     followingUsers: ['user_id2', 'user_id3'],
   },
   {
@@ -17,7 +16,6 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     password: await argon2.hash('secret123'),
     firstName: 'Emma',
     lastName: 'Johnson',
-    permissionFlags: 0,
     followingUsers: ['user_id1'],
   },
   {
@@ -26,7 +24,6 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     password: await argon2.hash('secret123'),
     firstName: 'Michael',
     lastName: 'Davis',
-    permissionFlags: 0,
     followingUsers: ['user_id2, user_id4'],
   },
   {
@@ -35,7 +32,6 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     password: await argon2.hash('secret123'),
     firstName: 'Olivia',
     lastName: 'Wilson',
-    permissionFlags: 0,
     followingUsers: ['user_id2, user_id3'],
   },
 ];
