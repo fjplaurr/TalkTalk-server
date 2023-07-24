@@ -7,21 +7,10 @@ import { User } from '../../users/types/users';
 import { PatchUserPayload, CreateUserPayload } from '../../users/types/dto';
 
 describe('users endpoints', () => {
-  let request: supertest.SuperAgentTest;
+  const request: supertest.SuperAgentTest = supertest.agent(app);
 
   const createUser = async (body: CreateUserPayload) =>
     request.post('/users').send(body);
-
-  before(() => {
-    request = supertest.agent(app);
-  });
-
-  after((done) => {
-    // call the done callback from Mocha
-    app.close(() => {
-      MongoDbService.close(done);
-    });
-  });
 
   describe('POST to /users', () => {
     it('creates an user and returns its id', async () => {
