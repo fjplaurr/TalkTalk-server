@@ -1,0 +1,6 @@
+FROM node:16.18.1-alpine
+WORKDIR '/app'
+COPY ./package.json .
+RUN npm install
+COPY . .
+ENTRYPOINT npx nodemon -L -e ts --exec 'npx mocha --require ts-node/register "test/**/*.test.ts" --watch --watch-files "test/**/*.test.ts"'

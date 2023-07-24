@@ -21,6 +21,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Server listening
-app.listen(process.env.API_PORT, () =>
+export default app.listen(process.env.API_PORT, () =>
   console.log(`Server listening on port ${process.env.API_PORT}`)
 );

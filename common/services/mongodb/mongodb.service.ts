@@ -48,9 +48,10 @@ class MongoDbService {
     }
   }
 
-  async close() {
+  async close(cb: Function) {
     if (this.connection != null) {
-      this.connection.close();
+      await this.connection.close();
+      cb && cb();
     }
   }
 
@@ -87,9 +88,9 @@ class MongoDbService {
       const updatedResult = await this.collection.updateOne(queryDocument, {
         $set: updateDocument,
       });
-      return updatedResult;
+      return updatedResult.modifiedCount;
     }
-    return null;
+    return 0;
   }
 
   async delete<T extends Document>(queryDocument: Partial<T>) {
@@ -110,9 +111,18 @@ class MongoDbService {
   }
 
   async dropDB() {
-    if (this.database !== null) {
-      await this.database?.dropDatabase();
+    return this.database?.dropDatabase();
+  }
+
+  async dropCollection() {
+    if (this.collection !== null) {
+      return this.database?.dropCollection(this.collection.collectionName);
     }
+    return null;
+  }
+
+  async createCollection(collectionName: string) {
+    this.database?.createCollection(collectionName);
   }
 
   async createMany<T extends Document>(documents: T[]) {

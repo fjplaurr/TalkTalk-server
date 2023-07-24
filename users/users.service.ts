@@ -1,6 +1,6 @@
 import argon2 from 'argon2';
 import UsersDao from './users.dao';
-import { CreateUserDto, PatchUserDto } from './types/dto';
+import { CreateUserPayload, PatchUserPayload } from './types/dto';
 
 class UsersService {
   async readAll() {
@@ -11,16 +11,16 @@ class UsersService {
     return UsersDao.readById(id);
   }
 
-  async create(resource: CreateUserDto) {
+  async create(resource: CreateUserPayload) {
     const hashedPassword = await argon2.hash(resource.password);
-    const resourceWithHashedPassword = {
+    const resourceWithHashedPassword: CreateUserPayload = {
       ...resource,
       password: hashedPassword,
     };
     return UsersDao.create(resourceWithHashedPassword);
   }
 
-  async updateById(id: string, resource: PatchUserDto) {
+  async updateById(id: string, resource: PatchUserPayload) {
     return UsersDao.updateById(id, resource);
   }
 

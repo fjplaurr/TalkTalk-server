@@ -10,3 +10,4 @@ services:
     environment:
       MONGO_URI: ${MONGO_URI}
       API_PORT: ${API_PORT}
+      NODE_ENV: "production"

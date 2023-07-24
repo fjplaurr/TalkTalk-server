@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  api:
+    image: fjplaurr/talktalk-server
+    build:
+      context: ./
+      dockerfile: Dockerfile.testing
+    volumes:
+      - ./:/app
+      - exclude:/app/node_modules
+      - exclude:/app/dist
+    ports:
+      - 5002:${API_PORT}
+      - 9229:9229 # For debugging
+    environment:
+      MONGO_URI: ${MONGO_URI}
+      API_PORT: ${API_PORT}
+      NODE_ENV: 'testing'
+      AUTHENTICATION_SECRET_KEY: ${AUTHENTICATION_SECRET_KEY}
+      TS_NODE_TRANSPILE_ONLY: true
+    depends_on:
+      - api_mongo
+  api_mongo:
+    image: mongo:latest
+    ports:
+      - 27018:27017
+volumes:
+  exclude:
