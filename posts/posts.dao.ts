@@ -1,6 +1,6 @@
 import shortid from 'shortid';
 import MongoDbService from '../common/services/mongodb/mongodb.service';
-import { CreatePostDto, PatchPostDto, PutPostDto } from './types/dto';
+import { CreatePostPayload, PatchPostPayload } from './types/dto';
 
 class PostsDao {
   collectionName;
@@ -18,7 +18,7 @@ class PostsDao {
     return MongoDbService.readOne({ _id: id });
   }
 
-  async create(postsFields: CreatePostDto) {
+  async create(postsFields: CreatePostPayload) {
     const id = shortid.generate();
     MongoDbService.create({
       ...postsFields,
@@ -27,7 +27,7 @@ class PostsDao {
     return id;
   }
 
-  async updateById(id: string, postsFields: PatchPostDto | PutPostDto) {
+  async updateById(id: string, postsFields: PatchPostPayload) {
     return MongoDbService.update({ _id: id }, postsFields);
   }
 

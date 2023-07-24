@@ -1,7 +1,21 @@
+import { Request } from 'express';
+// eslint-disable-next-line import/no-unresolved
+import { ParamsDictionary } from 'express-serve-static-core';
 import { Post } from './posts';
 
-export interface CreatePostDto extends Post {}
+export interface CreatePostPayload
+  extends Pick<Post, 'text' | 'authorId' | 'date'> {}
+export interface PatchPostPayload extends Partial<Post> {}
+export interface RequestWithBody<T> extends Request {
+  body: T;
+}
 
-export interface PutPostDto extends Required<CreatePostDto> {}
+export interface RequestWithParams<T extends ParamsDictionary> extends Request {
+  params: T;
+}
 
-export interface PatchPostDto extends Partial<CreatePostDto> {}
+export interface RequestWithParamsAndBody<T, U extends ParamsDictionary>
+  extends Request {
+  body: T;
+  params: U;
+}

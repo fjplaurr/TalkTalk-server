@@ -1,5 +1,5 @@
 import PostsDao from './posts.dao';
-import { CreatePostDto, PatchPostDto } from './types/dto';
+import { CreatePostPayload, PatchPostPayload } from './types/dto';
 
 class PostsService {
   async readAll() {
@@ -10,11 +10,11 @@ class PostsService {
     return PostsDao.readById(id);
   }
 
-  async create(resource: CreatePostDto) {
+  async create(resource: CreatePostPayload) {
     return PostsDao.create(resource);
   }
 
-  async updateById(id: string, resource: PatchPostDto) {
+  async updateById(id: string, resource: PatchPostPayload) {
     return PostsDao.updateById(id, resource);
   }
 
