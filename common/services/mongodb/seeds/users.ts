@@ -9,6 +9,7 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     firstName: 'John',
     lastName: 'Smith',
     followingUsers: ['user_id2', 'user_id3'],
+    status: 'Crafting digital magic behind the scenes.',
   },
   {
     _id: 'user_id2',
@@ -17,6 +18,7 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     firstName: 'Emma',
     lastName: 'Johnson',
     followingUsers: ['user_id1'],
+    status: 'Weaving stories from bits and bytes.',
   },
   {
     _id: 'user_id3',
@@ -25,6 +27,7 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     firstName: 'Michael',
     lastName: 'Davis',
     followingUsers: ['user_id2, user_id4'],
+    status: 'Juggling data to uncover hidden patterns.',
   },
   {
     _id: 'user_id4',
@@ -33,6 +36,7 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     firstName: 'Olivia',
     lastName: 'Wilson',
     followingUsers: ['user_id2, user_id3'],
+    status: 'Cooking up something exciting in the data kitchen.',
   },
 ];
 

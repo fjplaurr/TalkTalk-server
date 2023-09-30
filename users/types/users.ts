@@ -5,4 +5,5 @@ export type User = {
   firstName?: string;
   lastName?: string;
   followingUsers?: string[];
+  status?: string;
 };
