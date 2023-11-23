@@ -44,9 +44,12 @@ class CloudinaryController {
       const b64 = Buffer.from(req.file!.buffer).toString('base64');
       const dataURI = `data:${req.file!.mimetype};base64,${b64}`;
       const cldRes = await handleUpload(dataURI);
-      await UsersService.updateById(req.body.userId, {
+      const modifiedCount = await UsersService.updateById(req.body.userId, {
         pictureSrc: cldRes.secure_url,
       });
+      if (modifiedCount === 0) {
+        return res.sendStatus(500);
+      }
       return res.json({ url: cldRes.secure_url });
     } catch (err) {
       console.log(`It was not possible to upload the image:`, err);
