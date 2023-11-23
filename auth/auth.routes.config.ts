@@ -4,21 +4,15 @@ import AuthController from './auth.controller';
 import authMiddleware from './middleware/auth.middleware';
 import usersMiddleware from '../users/middleware/users.middleware';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
-import JwtMiddleware from './middleware/jwt.middleware';
 
 const router = express.Router();
 
-router.post('/loginWithEmailAndPassword', [
+router.post('/login', [
   body('email').isEmail(),
   body('password').isString(),
   BodyValidationMiddleware.validateRequest,
   authMiddleware.verifyUserPassword,
-  AuthController.createAccessToken,
-]);
-
-router.post('/loginWithToken', [
-  JwtMiddleware.validJWTNeeded,
-  AuthController.createAccessToken,
+  AuthController.login,
 ]);
 
 router.post('/signup', [

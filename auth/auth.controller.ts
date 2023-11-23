@@ -10,17 +10,20 @@ const createJWT = (payload: object) =>
     expiresIn: tokenExpirationInSeconds,
   });
 class AuthController {
-  createAccessToken(req: Request, res: Response) {
-    const token = createJWT(req.body);
+  async login(req: Request, res: Response) {
+    const user = await UsersService.getUserByEmail(req.body.email);
+    const accessToken = createJWT({ userId: user!._id });
 
-    return res.status(201).send({ accessToken: token });
+    return res.status(201).send({ accessToken, user });
   }
 
   async signup(req: Request, res: Response) {
-    const token = createJWT(req.body);
     const userId = await UsersService.create(req.body);
+    const accessToken = createJWT({ userId });
 
-    return res.status(201).send({ accessToken: token, userId });
+    const user = await UsersService.readById(userId);
+
+    return res.status(201).send({ accessToken, user });
   }
 }
 
