@@ -1,22 +1,12 @@
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import { Request, Response } from 'express';
-import UsersService from '../../../users/users.service';
+import CloudinaryService from './cloudinary.service';
+import { runMiddleware } from './middleware/cloudinary.middleware';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 const myUploadMiddleware = upload.single('avatar');
-
-function runMiddleware(req: Request, res: Response, fn: Function) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result: any) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
-}
 
 class CloudinaryController {
   config;
@@ -31,26 +21,10 @@ class CloudinaryController {
   }
 
   async uploadImage(req: Request, res: Response) {
-    async function handleUpload(file: string) {
-      const uploadResponse = await cloudinary.uploader.upload(file, {
-        resource_type: 'auto',
-        folder: 'TalkTalk',
-      });
-      return uploadResponse;
-    }
-
     try {
       await runMiddleware(req, res, myUploadMiddleware);
-      const b64 = Buffer.from(req.file!.buffer).toString('base64');
-      const dataURI = `data:${req.file!.mimetype};base64,${b64}`;
-      const cldRes = await handleUpload(dataURI);
-      const modifiedCount = await UsersService.updateById(req.body.userId, {
-        pictureSrc: cldRes.secure_url,
-      });
-      if (modifiedCount === 0) {
-        return res.sendStatus(500);
-      }
-      return res.json({ url: cldRes.secure_url });
+      const cldRes = await CloudinaryService.uploadImage(req.file!);
+      return res.status(201).send({ cldRes });
     } catch (err) {
       console.log(`It was not possible to upload the image:`, err);
       return res.sendStatus(500);

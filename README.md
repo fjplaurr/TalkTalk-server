@@ -88,6 +88,14 @@ Choose the method that suits your preference and workflow.
 | POST       | /login | Authenticate a user with email and password |
 | POST       | /signup                    | Sign up a new user                          |
 
+#### <b><u>Me Endpoints</u></b>
+
+The <b>Me</b> endpoints require the user to be authenticated with a Bearer token. 
+
+| HTTP Verbs | Endpoints     | Action                   |
+| ---------- | ------------- | ------------------------ |
+| POST       | /me/avatar | Edit the authenticated user's avatar |
+
 #### <b><u>MongoDB</u></b>
 
 | HTTP Verbs | Endpoints     | Action                   |

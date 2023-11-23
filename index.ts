@@ -7,6 +7,7 @@ if (process.env.NODE_ENV === 'development') {
 import express from 'express';
 import cors from 'cors';
 import usersRoutes from './users/users.routes.config';
+import meRoutes from './me/me.routes.config';
 import postsRoutes from './posts/posts.routes.config';
 import authRoutes from './auth/auth.routes.config';
 import mongodbRoutes from './common/services/mongodb/mongodb.routes.config';
@@ -21,6 +22,7 @@ app.use(express.json());
 
 // Routes
 app.use('/users', usersRoutes);
+app.use('/me', meRoutes);
 app.use('/posts', postsRoutes);
 app.use('/auth', authRoutes);
 app.use('/cloudinary', cloudinaryRoutes);
