@@ -28,10 +28,10 @@ Make sure your machine has installed: [git](https://git-scm.com/), [docker](http
    cp .example.env .env
    ```
 
-4. Build the images and start the containers.
+4. Run the application
 
    ```sh
-   docker compose -f docker-compose.dev.yml up
+   npm run start:dev
    ```
 
    The api should be running at the port defined by the variable `API_PORT` in the `.env` file (port 5002 if you did not modify it).
@@ -85,8 +85,7 @@ Choose the method that suits your preference and workflow.
 
 | HTTP Verbs | Endpoints                  | Action                                      |
 | ---------- | -------------------------- | ------------------------------------------- |
-| POST       | /loginWithEmailAndPassword | Authenticate a user with email and password |
-| POST       | /loginWithToken            | Authenticate a user with access token       |
+| POST       | /login | Authenticate a user with email and password |
 | POST       | /signup                    | Sign up a new user                          |
 
 #### <b><u>MongoDB</u></b>
@@ -95,6 +94,12 @@ Choose the method that suits your preference and workflow.
 | ---------- | ------------- | ------------------------ |
 | POST       | /mongodb/drop | Drop the entire database |
 | POST       | /mongodb/seed | Seed some demo data      |
+
+#### <b><u>Cloudinary</u></b>
+
+| HTTP Verbs | Endpoints     | Action                   |
+| ---------- | ------------- | ------------------------ |
+| POST       | /cloudinary/upload | Upload an image |
 
 ### Technologies Used
 
