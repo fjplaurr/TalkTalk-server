@@ -1,3 +1,9 @@
+/* eslint-disable import/first */
+import * as dotenv from 'dotenv';
+
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config();
+}
 import express from 'express';
 import cors from 'cors';
 import usersRoutes from './users/users.routes.config';

@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "npx eslint './**/*.ts'",
     "build": "npx tsc",
-    "start:prod": "NODE_ENV=production node dist/index.js"
+    "start:prod": "NODE_ENV=production node dist/index.js",
+    "start:dev": "NODE_ENV=development ts-node index.ts"
   },
   "keywords": [
     "node",
@@ -37,6 +38,7 @@
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
     "chai": "^4.3.7",
+    "dotenv": "^16.3.1",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^8.5.0",
