@@ -10,6 +10,7 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     lastName: 'Smith',
     followingUsers: ['user_id2', 'user_id3'],
     status: 'Crafting digital magic behind the scenes.',
+    pictureSrc: 'https://placedog.net/600',
   },
   {
     _id: 'user_id2',
@@ -19,6 +20,7 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     lastName: 'Johnson',
     followingUsers: ['user_id1'],
     status: 'Weaving stories from bits and bytes.',
+    pictureSrc: 'https://placedog.net/590',
   },
   {
     _id: 'user_id3',
@@ -28,6 +30,7 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     lastName: 'Davis',
     followingUsers: ['user_id2, user_id4'],
     status: 'Juggling data to uncover hidden patterns.',
+    pictureSrc: 'https://placedog.net/490',
   },
   {
     _id: 'user_id4',
@@ -37,6 +40,7 @@ const getUsersSeeds: () => Promise<User[]> = async () => [
     lastName: 'Wilson',
     followingUsers: ['user_id2, user_id3'],
     status: 'Cooking up something exciting in the data kitchen.',
+    pictureSrc: 'https://placedog.net/390',
   },
 ];
 
