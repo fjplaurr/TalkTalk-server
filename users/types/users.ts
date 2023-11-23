@@ -6,4 +6,5 @@ export type User = {
   lastName?: string;
   followingUsers?: string[];
   status?: string;
+  pictureSrc?: string;
 };
