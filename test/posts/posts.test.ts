@@ -84,7 +84,7 @@ describe('posts endpoints', () => {
   });
 
   describe('PATCH to /posts/:id', () => {
-    it('patches a post and returns a 204 status code', async () => {
+    it('patches a post and returns a 200 status code', async () => {
       const patchPostPayload: PatchPostPayload = {
         text: 'mockText',
       };
@@ -101,7 +101,7 @@ describe('posts endpoints', () => {
         .patch(`/posts/${createPostResponse.body.id}`)
         .send(patchPostPayload);
 
-      expect(res.status).to.equal(204);
+      expect(res.status).to.equal(200);
     });
 
     it('does not patch a non existing post and returns a 404 status code', async () => {

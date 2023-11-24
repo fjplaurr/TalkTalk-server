@@ -34,9 +34,9 @@ class PostsController {
     );
 
     if (modifiedDocuments > 0) {
-      res.status(204).send();
+      res.status(200).send();
     } else {
-      res.status(404).send();
+      res.status(304).send();
     }
   }
 

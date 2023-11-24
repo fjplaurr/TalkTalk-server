@@ -24,9 +24,9 @@ class MeController {
     );
 
     if (modifiedDocuments > 0) {
-      res.status(204).send();
+      res.status(200).send({ pictureSrc: secure_url });
     } else {
-      res.status(404).send();
+      res.status(304).send();
     }
   }
 
@@ -37,9 +37,9 @@ class MeController {
     );
 
     if (modifiedDocuments > 0) {
-      res.status(204).send();
+      res.status(200).send({ id: res.locals.jwt.userId });
     } else {
-      res.status(404).send();
+      res.status(304).send();
     }
   }
 }
