@@ -1,6 +1,7 @@
 import shortid from 'shortid';
 import MongoDbService from '../common/services/mongodb/mongodb.service';
 import { CreateUserPayload, PatchUserPayload } from './types/dto';
+import { User } from './types/users';
 
 class UsersDao {
   collectionName;
@@ -20,10 +21,15 @@ class UsersDao {
 
   async create(userFields: CreateUserPayload) {
     const id = shortid.generate();
-    MongoDbService.create({
+    await MongoDbService.create<User>({
       email: userFields.email,
       password: userFields.password,
+      firstName: userFields.firstName,
+      lastName: userFields.lastName,
       _id: id,
+      followingUsers: [],
+      pictureSrc: '',
+      status: '',
     });
     return id;
   }

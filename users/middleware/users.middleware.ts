@@ -24,6 +24,8 @@ class UsersMiddleware {
       .withMessage(
         'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters.'
       ),
+    body('firstName').isString(),
+    body('lastName').isString(),
     BodyValidationMiddleware.validateRequest,
   ];
 }

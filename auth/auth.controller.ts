@@ -20,7 +20,6 @@ class AuthController {
   async signup(req: Request, res: Response) {
     const userId = await UsersService.create(req.body);
     const accessToken = createJWT({ userId });
-
     const user = await UsersService.readById(userId);
 
     return res.status(201).send({ accessToken, user });

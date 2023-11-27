@@ -4,7 +4,8 @@ import { ParamsDictionary } from 'express-serve-static-core';
 
 import { User } from './users';
 
-export interface CreateUserPayload extends Pick<User, 'password' | 'email'> {}
+export interface CreateUserPayload
+  extends Pick<User, 'password' | 'email' | 'firstName' | 'lastName'> {}
 export interface PatchUserPayload extends Partial<User> {}
 export interface RequestWithBody<T> extends Request {
   body: T;
