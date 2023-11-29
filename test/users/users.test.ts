@@ -17,6 +17,8 @@ describe('users endpoints', () => {
       const createUserPayload: CreateUserPayload = {
         email: `mockUser+${shortid.generate()}@mockUser.com`,
         password: 'mockUser',
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
       };
 
       const res = await createUser(createUserPayload);
@@ -53,6 +55,8 @@ describe('users endpoints', () => {
       const createUserPayload: CreateUserPayload = {
         email: `mockUser+${shortid.generate()}@mockUser.com`,
         password: 'mockUser',
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
       };
 
       const createUserResponse = await createUser(createUserPayload);
@@ -80,6 +84,8 @@ describe('users endpoints', () => {
       const createUserPayload: CreateUserPayload = {
         email,
         password: 'mockUser',
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
       };
 
       await createUser(createUserPayload);
@@ -111,6 +117,8 @@ describe('users endpoints', () => {
       const createUserPayload: CreateUserPayload = {
         email: `mockUser+${shortid.generate()}@mockUser.com`,
         password: 'mockUser',
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
       };
 
       const createUserResponse = await createUser(createUserPayload);
@@ -140,6 +148,8 @@ describe('users endpoints', () => {
       const createUserPayload: CreateUserPayload = {
         email: `mockUser+${shortid.generate()}@mockUser.com`,
         password: 'mockUser',
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
       };
 
       const createUserResponse = await createUser(createUserPayload);
