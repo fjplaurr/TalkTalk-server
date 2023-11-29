@@ -11,22 +11,25 @@ const myUploadMiddleware = upload.single('avatar');
 
 class MeController {
   async updateAvatar(req: Request, res: Response) {
-    await runMiddleware(req, res, myUploadMiddleware);
+    let secure_url;
+    try {
+      await runMiddleware(req, res, myUploadMiddleware);
+      ({ secure_url } = await CloudinaryService.uploadImage(req.file!));
 
-    const { secure_url } = await CloudinaryService.uploadImage(req.file!);
+      // update user avatar with the secure_url from Cloudinary
+      const modifiedDocuments = await UsersService.updateById(
+        res.locals.jwt.userId,
+        {
+          pictureSrc: secure_url,
+        }
+      );
 
-    // update user avatar with the secure_url from Cloudinary
-    const modifiedDocuments = await UsersService.updateById(
-      res.locals.jwt.userId,
-      {
-        pictureSrc: secure_url,
-      }
-    );
-
-    if (modifiedDocuments > 0) {
-      res.status(200).send({ pictureSrc: secure_url });
-    } else {
-      res.status(304).send();
+      return modifiedDocuments > 0
+        ? res.status(200).send({ pictureSrc: secure_url })
+        : res.status(304).send();
+    } catch (err) {
+      console.log(`It was not possible to upload the image:`, err);
+      return res.status(500).send();
     }
   }
 
