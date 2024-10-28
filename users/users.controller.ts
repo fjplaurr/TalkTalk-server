@@ -32,16 +32,20 @@ class UsersController {
     if (req.body.password) {
       req.body.password = await argon2.hash(req.body.password);
     }
-    const modifiedDocuments = await UsersService.updateById(
+    const updatedResult = await UsersService.updateById(
       req.params.id,
       req.body
     );
 
-    if (modifiedDocuments > 0) {
-      res.status(200).send({ id: req.params.id });
-    } else {
-      res.status(304).send();
+    if (updatedResult?.matchedCount === 0) {
+      return res.status(404).json({ message: 'Document not found' });
     }
+
+    if (updatedResult?.modifiedCount && updatedResult.modifiedCount > 0) {
+      return res.status(204).send();
+    }
+
+    return res.status(304).send();
   }
 
   async deleteById(req: RequestWithParams<{ id: string }>, res: Response) {

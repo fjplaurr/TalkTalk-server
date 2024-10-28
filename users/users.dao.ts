@@ -16,11 +16,13 @@ class UsersDao {
   }
 
   async readById(id: string) {
-    return MongoDbService.readOne({ _id: id });
+    const document = await MongoDbService.readOne({ _id: id });
+    return document;
   }
 
   async create(userFields: CreateUserPayload) {
     const id = shortid.generate();
+
     await MongoDbService.create<User>({
       email: userFields.email,
       password: userFields.password,
@@ -31,15 +33,22 @@ class UsersDao {
       pictureSrc: '',
       status: '',
     });
+
     return id;
   }
 
   async updateById(id: string, userFields: PatchUserPayload) {
-    return MongoDbService.update({ _id: id }, userFields);
+    const updatedDocument = await MongoDbService.update(
+      { _id: id },
+      userFields
+    );
+
+    return updatedDocument;
   }
 
   async deleteById(id: string) {
-    return MongoDbService.delete({ _id: id });
+    const deletedResult = await MongoDbService.delete({ _id: id });
+    return deletedResult;
   }
 
   async getUserByEmail(email: string) {
@@ -63,7 +72,9 @@ class UsersDao {
       { $project: projectExcludeIds },
     ];
 
-    const documents = await MongoDbService.aggregate(pipeline);
+    const mongo = await MongoDbService;
+
+    const documents = await mongo.aggregate(pipeline);
 
     return documents && documents.length > 0 ? documents[0].ids : [];
   }
