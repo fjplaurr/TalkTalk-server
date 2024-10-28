@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import multer from 'multer';
 import CloudinaryService from '../common/services/cloudinary/cloudinary.service';
-import { runMiddleware } from '../common/services/cloudinary/middleware/cloudinary.middleware';
+import { runCallbackMiddlewareAsPromise } from '../common/services/cloudinary/middleware/cloudinary.middleware';
 import UsersService from '../users/users.service';
 
 const storage = multer.memoryStorage();
@@ -11,39 +11,51 @@ const myUploadMiddleware = upload.single('avatar');
 
 class MeController {
   async updateAvatar(req: Request, res: Response) {
-    let secure_url;
     try {
-      await runMiddleware(req, res, myUploadMiddleware);
-      ({ secure_url } = await CloudinaryService.uploadImage(req.file!));
+      // run Multer middleware to process file upload
+      await runCallbackMiddlewareAsPromise(req, res, myUploadMiddleware);
 
-      // update user avatar with the secure_url from Cloudinary
-      const modifiedDocuments = await UsersService.updateById(
+      // upload image to Cloudinary
+      const { secure_url } = await CloudinaryService.uploadImage(req.file!);
+
+      // update user avatar in Mongodb with the secure_url from Cloudinary
+      const updatedResult = await UsersService.updateById(
         res.locals.jwt.userId,
-        {
-          pictureSrc: secure_url,
-        }
+        { pictureSrc: secure_url }
       );
 
-      return modifiedDocuments > 0
+      if (!updatedResult) {
+        return res.status(500).json({ message: 'Error updating the user' });
+      }
+
+      if (updatedResult.matchedCount === 0) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+
+      return updatedResult.modifiedCount > 0
         ? res.status(200).send({ pictureSrc: secure_url })
         : res.status(304).send();
     } catch (err) {
-      console.log(`It was not possible to upload the image:`, err);
-      return res.status(500).send();
+      console.error('Error uploading image:', err);
+      return res.status(500).json({ message: 'Internal server error' });
     }
   }
 
   async updateProfile(req: Request, res: Response) {
-    const modifiedDocuments = await UsersService.updateById(
+    const updatedResult = await UsersService.updateById(
       res.locals.jwt.userId,
       req.body
     );
 
-    if (modifiedDocuments > 0) {
-      res.status(200).send({ id: res.locals.jwt.userId });
-    } else {
-      res.status(304).send();
+    if (updatedResult?.matchedCount === 0) {
+      return res.status(404).json({ message: 'Document not found' });
     }
+
+    if (updatedResult?.modifiedCount && updatedResult.modifiedCount > 0) {
+      return res.status(200).send({ id: res.locals.jwt.userId });
+    }
+
+    return res.status(304).send();
   }
 }
 
