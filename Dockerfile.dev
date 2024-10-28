@@ -1,6 +1,0 @@
-FROM node:16.18.1-alpine
-WORKDIR '/app'
-COPY ./package.json .
-RUN npm install
-COPY . .
-ENTRYPOINT npx nodemon -L -e ts,json --exec 'node --inspect=0.0.0.0 -r ts-node/register index.ts'
