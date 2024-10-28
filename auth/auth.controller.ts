@@ -5,7 +5,7 @@ import UsersService from '../users/users.service';
 const jwtSecret: string = process.env.AUTHENTICATION_SECRET_KEY!;
 const tokenExpirationInSeconds = 36000;
 
-const createJWT = (payload: object) =>
+export const createJWT = (payload: object) =>
   jwt.sign(payload, jwtSecret, {
     expiresIn: tokenExpirationInSeconds,
   });

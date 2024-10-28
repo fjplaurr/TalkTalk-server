@@ -1,6 +1,5 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import { Jwt } from '../../common/types/jwt';
 
 const jwtSecret: string = process.env.AUTHENTICATION_SECRET_KEY!;
 
@@ -16,15 +15,14 @@ class JwtMiddleware {
         if (authorization[0] !== 'Bearer') {
           return res.status(401).send();
         }
-        res.locals.jwt = jwt.verify(authorization[1], jwtSecret) as Jwt;
+        res.locals.jwt = jwt.verify(authorization[1], jwtSecret);
         return next();
       } catch (err) {
-        console.log('err: ', err);
-        return res.status(403).send();
+        console.error('JWT verification error:', err);
+        return res.status(401).send();
       }
-    } else {
-      return res.status(401).send();
     }
+    return res.status(401).send();
   }
 }
 
