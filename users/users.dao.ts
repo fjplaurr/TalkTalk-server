@@ -15,12 +15,16 @@ class UsersDao {
     return documents;
   }
 
-  async readById(id: string) {
-    const document = await MongoDbService.readOne({ _id: id });
+  async readById(id: string): Promise<User | null> {
+    const document: User | null = await MongoDbService.readOne<
+      User,
+      Pick<User, '_id'>
+    >({ _id: id });
+
     return document;
   }
 
-  async create(userFields: CreateUserPayload) {
+  async create(userFields: CreateUserPayload): Promise<string> {
     const id = shortid.generate();
 
     await MongoDbService.create<User>({
@@ -51,8 +55,12 @@ class UsersDao {
     return deletedResult;
   }
 
-  async getUserByEmail(email: string) {
-    const document = await MongoDbService.readOne({ email });
+  async getUserByEmail(email: string): Promise<User | null> {
+    const document: User | null = await MongoDbService.readOne<
+      User,
+      Pick<User, 'email'>
+    >({ email });
+
     return document;
   }
 

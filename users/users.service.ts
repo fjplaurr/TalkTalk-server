@@ -1,17 +1,18 @@
 import argon2 from 'argon2';
 import UsersDao from './users.dao';
 import { CreateUserPayload, PatchUserPayload } from './types/dto';
+import { User } from './types/users';
 
 class UsersService {
   async readAll() {
     return UsersDao.readAll();
   }
 
-  async readById(id: string) {
+  async readById(id: string): Promise<User | null> {
     return UsersDao.readById(id);
   }
 
-  async create(resource: CreateUserPayload) {
+  async create(resource: CreateUserPayload): Promise<string> {
     const hashedPassword = await argon2.hash(resource.password);
     const resourceWithHashedPassword: CreateUserPayload = {
       ...resource,
@@ -28,7 +29,7 @@ class UsersService {
     return UsersDao.deleteById(id);
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<User | null> {
     return UsersDao.getUserByEmail(email);
   }
 

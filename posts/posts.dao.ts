@@ -1,6 +1,7 @@
 import shortid from 'shortid';
 import MongoDbService from '../common/services/mongodb/mongodb.service';
 import { CreatePostPayload, PatchPostPayload } from './types/dto';
+import { Post } from './types/posts';
 
 class PostsDao {
   collectionName;
@@ -15,7 +16,9 @@ class PostsDao {
   }
 
   async readById(id: string) {
-    const document = await MongoDbService.readOne({ _id: id });
+    const document = await MongoDbService.readOne<Post, Pick<Post, '_id'>>({
+      _id: id,
+    });
     return document;
   }
 

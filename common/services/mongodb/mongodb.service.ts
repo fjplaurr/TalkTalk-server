@@ -65,9 +65,10 @@ class MongoDbService {
     return null;
   }
 
-  async readOne(queryDocument: Partial<Document>) {
+  async readOne<T, U extends Partial<T>>(queryDocument: U): Promise<T | null> {
     if (this.collection !== null) {
-      const foundDocument = this.collection.findOne(queryDocument);
+      const foundDocument: Promise<T | null> =
+        this.collection.findOne<T>(queryDocument);
       return foundDocument;
     }
     return null;
