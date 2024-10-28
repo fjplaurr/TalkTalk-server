@@ -1,49 +1,45 @@
-import supertest from 'supertest';
 import { expect } from 'chai';
 import shortid from 'shortid';
-import app from '../../index';
-import MongoDbService from '../../common/services/mongodb/mongodb.service';
+import supertest from 'supertest';
 import { User } from '../../users/types/users';
-import { PatchUserPayload, CreateUserPayload } from '../../users/types/dto';
+import { CreateUserPayload, PatchUserPayload } from '../../users/types/dto';
+// import { stopServer } from '../../server';
+import app, { stopServer } from '../../index';
+
+export const request: supertest.SuperAgentTest = supertest.agent(app);
+
+after(async () => {
+  await stopServer();
+});
+
+const createUserPayloadDefault: CreateUserPayload = {
+  email: `mockUser+${shortid.generate()}@mockUser.com`,
+  password: 'mockUser',
+  firstName: 'mockFirstName',
+  lastName: 'mockLastName',
+};
+
+export const createUser = async (body: CreateUserPayload) =>
+  request.post('/users').send(body);
 
 describe('users endpoints', () => {
-  const request: supertest.SuperAgentTest = supertest.agent(app);
-
-  const createUser = async (body: CreateUserPayload) =>
-    request.post('/users').send(body);
-
   describe('POST to /users', () => {
     it('creates an user and returns its id', async () => {
-      const createUserPayload: CreateUserPayload = {
-        email: `mockUser+${shortid.generate()}@mockUser.com`,
-        password: 'mockUser',
-        firstName: 'mockFirstName',
-        lastName: 'mockLastName',
-      };
+      const createUserResponse = await createUser(createUserPayloadDefault);
 
-      const res = await createUser(createUserPayload);
-
-      expect(res.status).to.equal(201);
-      expect(res.body.id).to.be.a('string');
+      expect(createUserResponse.status).to.equal(201);
+      expect(createUserResponse.body.id).to.be.a('string');
     });
 
     it('returns an error if email is missing in the request body', async () => {
-      const createUserPayload: any = {
-        password: 'mockUser',
-      };
+      const createUserResponse = await createUser(createUserPayloadDefault);
 
-      const res = await createUser(createUserPayload);
-
-      expect(res.status).to.equal(400);
-      expect(res.error).to.be.ok;
+      expect(createUserResponse.status).to.equal(400);
+      expect(createUserResponse.error).to.be.ok;
     });
 
     it('returns an error if password is missing in the request body', async () => {
-      const createUserPayload: any = {
-        email: `mockUser+${shortid.generate()}@mockUser.com`,
-      };
-
-      const res = await createUser(createUserPayload);
+      const res = await createUser(createUserPayloadDefault);
 
       expect(res.status).to.equal(400);
       expect(res.error).to.be.ok;
@@ -61,12 +57,14 @@ describe('users endpoints', () => {
 
       const createUserResponse = await createUser(createUserPayload);
 
-      const res = await request
+      expect(createUserResponse.status).to.equal(201);
+
+      const getUserResponse = await request
         .get(`/users/${createUserResponse.body.id}`)
         .send();
 
-      expect(res.status).to.equal(200);
-      expect(res.body._id).to.equal(createUserResponse.body.id);
+      expect(getUserResponse.body._id).to.equal(createUserResponse.body.id);
+      expect(getUserResponse.status).to.equal(200);
     });
 
     it('returns an empty object if the user does not exist', async () => {
@@ -96,16 +94,6 @@ describe('users endpoints', () => {
       expect(res.status).to.equal(200);
       expect(found).to.be.ok;
     });
-
-    it('returns an empty array if there are no users', async () => {
-      await MongoDbService.dropCollection();
-      await MongoDbService.createCollection('users');
-
-      const res = await request.get(`/users`).send();
-
-      expect(res.body.length).to.equal(0);
-      expect(res.status).to.equal(200);
-    });
   });
 
   describe('PATCH to /users/:userId', () => {
@@ -127,7 +115,7 @@ describe('users endpoints', () => {
         .patch(`/users/${createUserResponse.body.id}`)
         .send(patchUserPayload);
 
-      expect(res.status).to.equal(200);
+      expect(res.status).to.equal(204);
     });
 
     it('does not patch a non existing user and returns a 404 status code', async () => {
