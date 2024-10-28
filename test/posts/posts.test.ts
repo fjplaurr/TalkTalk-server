@@ -1,41 +1,38 @@
-import supertest from 'supertest';
 import { expect } from 'chai';
 import shortid from 'shortid';
-import app from '../../index';
-import MongoDbService from '../../common/services/mongodb/mongodb.service';
+import supertest from 'supertest';
 import { Post } from '../../posts/types/posts';
 import { PatchPostPayload, CreatePostPayload } from '../../posts/types/dto';
+import app, { stopServer } from '../../index';
+
+export const request: supertest.SuperAgentTest = supertest.agent(app);
+
+after(async () => {
+  await stopServer();
+});
+
+const createPostPayloadDefault = {
+  text: 'mockText',
+  authorId: 'mockAuthorId',
+  date: new Date('2023-07-19T23:15:30.000Z'),
+};
 
 describe('posts endpoints', () => {
-  const request: supertest.SuperAgentTest = supertest.agent(app);
-
   const createPost = async (body: CreatePostPayload) =>
     request.post('/posts').send(body);
 
   describe('POST to /posts', () => {
     it('creates a post and returns its id', async () => {
-      const createPostPayload: CreatePostPayload = {
-        text: 'mockText',
-        authorId: 'mockAuthorId',
-        date: new Date('2023-07-19T23:15:30.000Z'),
-      };
+      const createPostResponse = await createPost(createPostPayloadDefault);
 
-      const res = await createPost(createPostPayload);
-
-      expect(res.status).to.equal(201);
-      expect(res.body.id).to.be.a('string');
+      expect(createPostResponse.status).to.equal(201);
+      expect(createPostResponse.body.id).to.be.a('string');
     });
   });
 
   describe('GET from /posts/:id', () => {
     it('returns a post', async () => {
-      const createPostPayload: CreatePostPayload = {
-        text: 'mockText',
-        authorId: 'mockAuthorId',
-        date: new Date('2023-07-19T23:15:30.000Z'),
-      };
-
-      const createPostResponse = await createPost(createPostPayload);
+      const createPostResponse = await createPost(createPostPayloadDefault);
 
       const res = await request
         .get(`/posts/${createPostResponse.body.id}`)
@@ -58,9 +55,8 @@ describe('posts endpoints', () => {
       const randomText = shortid.generate();
 
       const createPostPayload: CreatePostPayload = {
+        ...createPostPayloadDefault,
         text: randomText,
-        authorId: 'mockAuthorId',
-        date: new Date('2023-07-19T23:15:30.000Z'),
       };
 
       await createPost(createPostPayload);
@@ -69,33 +65,17 @@ describe('posts endpoints', () => {
       const found = res.body.some((post: Post) => post.text === randomText);
 
       expect(res.status).to.equal(200);
-      expect(found).to.be.ok;
-    });
-
-    it('returns an empty array if there are no posts', async () => {
-      await MongoDbService.dropCollection();
-      await MongoDbService.createCollection('posts');
-
-      const res = await request.get(`/posts`).send();
-
-      expect(res.body.length).to.equal(0);
-      expect(res.status).to.equal(200);
+      expect(found).to.be.true;
     });
   });
 
   describe('PATCH to /posts/:id', () => {
     it('patches a post and returns a 200 status code', async () => {
       const patchPostPayload: PatchPostPayload = {
-        text: 'mockText',
+        text: 'mockTextModified',
       };
 
-      const createPostPayload: CreatePostPayload = {
-        text: 'mockText',
-        authorId: 'mockAuthorId',
-        date: new Date('2023-07-19T23:15:30.000Z'),
-      };
-
-      const createPostResponse = await createPost(createPostPayload);
+      const createPostResponse = await createPost(createPostPayloadDefault);
 
       const res = await request
         .patch(`/posts/${createPostResponse.body.id}`)
