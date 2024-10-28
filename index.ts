@@ -6,11 +6,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 import express from 'express';
 import cors from 'cors';
+import http from 'http';
 import usersRoutes from './users/users.routes.config';
 import meRoutes from './me/me.routes.config';
 import postsRoutes from './posts/posts.routes.config';
 import authRoutes from './auth/auth.routes.config';
 import mongodbRoutes from './common/services/mongodb/mongodb.routes.config';
+import MongoDbService from './common/services/mongodb/mongodb.service';
 
 // Initializes express application
 const app = express();
@@ -28,7 +30,26 @@ if (process.env.NODE_ENV === 'development') {
   app.use('/mongodb', mongodbRoutes);
 }
 
-// Server listening
-export default app.listen(process.env.API_PORT, () =>
-  console.log(`Server listening on port ${process.env.API_PORT}`)
-);
+let server: http.Server;
+
+export const startServer = async () => {
+  // Open mongodb connection
+  await MongoDbService.connectWithRetry();
+
+  // Start server
+  server = app.listen(process.env.API_PORT, () =>
+    console.log(`Server listening on port ${process.env.API_PORT}`)
+  );
+};
+
+export const stopServer = async () => {
+  // Close server
+  server.close(() => console.log('Server stopped'));
+
+  // Close mongodb connection
+  await MongoDbService.close();
+};
+
+startServer();
+
+export default app;
