@@ -15,12 +15,13 @@ class PostsDao {
   }
 
   async readById(id: string) {
-    return MongoDbService.readOne({ _id: id });
+    const document = await MongoDbService.readOne({ _id: id });
+    return document;
   }
 
   async create(postsFields: CreatePostPayload) {
     const id = shortid.generate();
-    MongoDbService.create({
+    await MongoDbService.create({
       ...postsFields,
       _id: id,
     });
@@ -28,11 +29,16 @@ class PostsDao {
   }
 
   async updateById(id: string, postsFields: PatchPostPayload) {
-    return MongoDbService.update({ _id: id }, postsFields);
+    const updatedDocument = await MongoDbService.update(
+      { _id: id },
+      postsFields
+    );
+    return updatedDocument;
   }
 
   async deleteById(id: string) {
-    return MongoDbService.delete({ _id: id });
+    const deletedResult = await MongoDbService.delete({ _id: id });
+    return deletedResult;
   }
 
   async readPostsByUserId(authorId: string) {
@@ -44,7 +50,7 @@ class PostsDao {
 const postsDao = new PostsDao();
 
 const postsDaoProxy = new Proxy(postsDao, {
-  get(target: typeof postsDao, prop: keyof typeof postsDao) {
+  get(target: PostsDao, prop: keyof PostsDao) {
     MongoDbService.setCollection(target.collectionName);
     return target[prop];
   },

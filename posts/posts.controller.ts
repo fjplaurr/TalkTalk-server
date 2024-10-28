@@ -21,6 +21,7 @@ class PostsController {
 
   async create(req: RequestWithBody<CreatePostPayload>, res: Response) {
     const postId = await PostsService.create(req.body);
+    console.log('postId', postId);
     res.status(201).send({ id: postId });
   }
 
@@ -28,16 +29,20 @@ class PostsController {
     req: RequestWithParamsAndBody<PatchPostPayload, { id: string }>,
     res: Response
   ) {
-    const modifiedDocuments = await PostsService.updateById(
+    const updatedResult = await PostsService.updateById(
       req.params.id,
       req.body
     );
 
-    if (modifiedDocuments > 0) {
-      res.status(200).send();
-    } else {
-      res.status(304).send();
+    if (updatedResult?.matchedCount === 0) {
+      return res.status(404).json({ message: 'Document not found' });
     }
+
+    if (updatedResult?.modifiedCount && updatedResult.modifiedCount > 0) {
+      return res.status(200).send();
+    }
+
+    return res.status(304).send();
   }
 
   async deleteById(req: RequestWithParams<{ id: string }>, res: Response) {
