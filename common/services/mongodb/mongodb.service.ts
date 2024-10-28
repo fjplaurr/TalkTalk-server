@@ -1,10 +1,14 @@
 import { Collection, Db, Document, MongoClient } from 'mongodb';
+import http from 'http';
 import { getSeeds } from './seeds';
 
 const URL = process.env.MONGO_URI!;
 const DATABASE_NAME = 'api-db';
 
+// eslint-disable-next-line import/no-mutable-exports
+export let server: http.Server;
 class MongoDbService {
+  private static instance: MongoDbService | null = null; // Static instance variable
   connection: MongoClient | null;
   private database: Db | null;
   private collection: Collection<Document> | null;
@@ -18,7 +22,6 @@ class MongoDbService {
     this.collection = null;
     this.url = URL;
     this.databaseName = DATABASE_NAME;
-    this.connectWithRetry();
   }
 
   setCollection(collectionName: string) {
@@ -36,7 +39,7 @@ class MongoDbService {
     try {
       this.connection = await MongoClient.connect(this.url);
       this.database = await this.connection.db(this.databaseName);
-      console.log('Connected to database', this.databaseName);
+      console.log('MongoDB connection successful', this.databaseName);
     } catch (err) {
       const retrySeconds = 5;
       this.count += 1;
@@ -48,10 +51,9 @@ class MongoDbService {
     }
   }
 
-  async close(cb: Function) {
+  async close() {
     if (this.connection != null) {
       await this.connection.close();
-      cb && cb();
     }
   }
 
@@ -88,9 +90,9 @@ class MongoDbService {
       const updatedResult = await this.collection.updateOne(queryDocument, {
         $set: updateDocument,
       });
-      return updatedResult.modifiedCount;
+      return updatedResult;
     }
-    return 0;
+    return null;
   }
 
   async delete<T extends Document>(queryDocument: Partial<T>) {

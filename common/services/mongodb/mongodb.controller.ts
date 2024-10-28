@@ -3,6 +3,7 @@ import MongoDbService from './mongodb.service';
 
 class MongoDbController {
   async dropDB(req: Request, res: Response) {
+    console.log('controladora drop');
     try {
       await MongoDbService.dropDB();
       return res.status(204).send();
