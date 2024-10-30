@@ -12,11 +12,11 @@ export const createJWT = (payload: object): string =>
   });
 class AuthController {
   async login(req: Request, res: Response) {
-    const user = await UsersService.getUserByEmail(req.body.email);
+    const user: User | null = await UsersService.getUserByEmail(req.body.email);
     if (!user) {
       return res.status(404).send();
     }
-    const accessToken = createJWT({ userId: user._id });
+    const accessToken: string = createJWT({ userId: user._id });
     return res.status(201).send({ accessToken, user });
   }
 
