@@ -36,14 +36,14 @@ export const startServer = async () => {
   // Open mongodb connection
   await MongoDbService.connectWithRetry();
 
-  // Start server
   server = app.listen(process.env.API_PORT, () =>
+    // eslint-disable-next-line no-console
     console.log(`Server listening on port ${process.env.API_PORT}`)
   );
 };
 
 export const stopServer = async () => {
-  // Close server
+  // eslint-disable-next-line no-console
   server.close(() => console.log('Server stopped'));
 
   // Close mongodb connection

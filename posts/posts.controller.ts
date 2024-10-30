@@ -21,7 +21,6 @@ class PostsController {
 
   async create(req: RequestWithBody<CreatePostPayload>, res: Response) {
     const postId = await PostsService.create(req.body);
-    console.log('postId', postId);
     res.status(201).send({ id: postId });
   }
 

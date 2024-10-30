@@ -3,11 +3,11 @@ import MongoDbService from './mongodb.service';
 
 class MongoDbController {
   async dropDB(req: Request, res: Response) {
-    console.log('controladora drop');
     try {
       await MongoDbService.dropDB();
       return res.status(204).send();
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(`It was not possible to drop the database:`, err);
       return res.status(422).send();
     }
@@ -18,6 +18,7 @@ class MongoDbController {
       await MongoDbService.seedDB();
       return res.status(201).send();
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(`It was not possible to reseed the database:`, err);
       return res.sendStatus(422);
     }

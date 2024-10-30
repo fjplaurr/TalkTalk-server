@@ -29,20 +29,24 @@ class MongoDbService {
       try {
         this.collection = this.database.collection<Document>(collectionName);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(`It was not possible to set a collection:`, err);
       }
     }
   }
 
   async connectWithRetry() {
+    // eslint-disable-next-line no-console
     console.log('Attempting MongoDB connection (will retry if needed)');
     try {
       this.connection = await MongoClient.connect(this.url);
       this.database = await this.connection.db(this.databaseName);
+      // eslint-disable-next-line no-console
       console.log('MongoDB connection successful', this.databaseName);
     } catch (err) {
       const retrySeconds = 5;
       this.count += 1;
+      // eslint-disable-next-line no-console
       console.log(
         `MongoDB connection unsuccessful (will retry #${this.count} after ${retrySeconds} seconds):`,
         err
