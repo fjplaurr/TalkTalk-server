@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import PostsService from './posts.service';
-import {
+import type {
   CreatePostPayload,
   PatchPostPayload,
   RequestWithBody,

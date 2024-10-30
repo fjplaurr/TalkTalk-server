@@ -1,5 +1,6 @@
-import { Collection, Db, Document, MongoClient } from 'mongodb';
-import http from 'http';
+import type { Collection, Db, Document } from 'mongodb';
+import { MongoClient } from 'mongodb';
+import type http from 'http';
 import { getSeeds } from './seeds';
 
 const URL = process.env.MONGO_URI!;

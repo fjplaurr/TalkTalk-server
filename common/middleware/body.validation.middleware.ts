@@ -1,4 +1,4 @@
-import express from 'express';
+import type express from 'express';
 import { validationResult } from 'express-validator';
 
 class BodyValidationMiddleware {

@@ -6,7 +6,7 @@ import shortid from 'shortid';
 import app, { stopServer } from '../../index';
 import { createJWT } from '../../auth/auth.controller';
 import { createUser } from '../users/users.test';
-import { CreateUserPayload } from '../../users/types/dto';
+import type { CreateUserPayload } from '../../users/types/dto';
 
 export const request: supertest.SuperAgentTest = supertest.agent(app);
 

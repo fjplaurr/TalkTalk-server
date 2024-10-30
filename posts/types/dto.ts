@@ -1,7 +1,7 @@
-import { Request } from 'express';
+import type { Request } from 'express';
 // eslint-disable-next-line import/no-unresolved
-import { ParamsDictionary } from 'express-serve-static-core';
-import { Post } from './posts';
+import type { ParamsDictionary } from 'express-serve-static-core';
+import type { Post } from './posts';
 
 export interface CreatePostPayload
   extends Pick<Post, 'text' | 'authorId' | 'date'> {}

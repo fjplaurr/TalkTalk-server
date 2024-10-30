@@ -1,8 +1,8 @@
-import { Request } from 'express';
+import type { Request } from 'express';
 // eslint-disable-next-line import/no-unresolved
-import { ParamsDictionary } from 'express-serve-static-core';
+import type { ParamsDictionary } from 'express-serve-static-core';
 
-import { User } from './users';
+import type { User } from './users';
 
 export interface CreateUserPayload
   extends Pick<User, 'password' | 'email' | 'firstName' | 'lastName'> {}

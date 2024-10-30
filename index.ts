@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 import express from 'express';
 import cors from 'cors';
-import http from 'http';
+import type http from 'http';
 import usersRoutes from './users/users.routes.config';
 import meRoutes from './me/me.routes.config';
 import postsRoutes from './posts/posts.routes.config';

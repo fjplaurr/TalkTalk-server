@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import UsersService from '../users/users.service';
-import { User } from '../users/types/users';
+import type { User } from '../users/types/users';
 
 const jwtSecret: string = process.env.AUTHENTICATION_SECRET_KEY!;
 const tokenExpirationInSeconds = 36000;

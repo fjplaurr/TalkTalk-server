@@ -57,6 +57,7 @@
     ],
     "prettier/prettier": "error",
     "lines-between-class-members": 0,
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "@typescript-eslint/consistent-type-imports": "error"
   }
 }

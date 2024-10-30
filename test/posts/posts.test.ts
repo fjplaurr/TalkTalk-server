@@ -1,8 +1,11 @@
 import { expect } from 'chai';
 import shortid from 'shortid';
 import supertest from 'supertest';
-import { Post } from '../../posts/types/posts';
-import { PatchPostPayload, CreatePostPayload } from '../../posts/types/dto';
+import type { Post } from '../../posts/types/posts';
+import type {
+  PatchPostPayload,
+  CreatePostPayload,
+} from '../../posts/types/dto';
 import app, { stopServer } from '../../index';
 
 export const request: supertest.SuperAgentTest = supertest.agent(app);

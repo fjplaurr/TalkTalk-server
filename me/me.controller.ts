@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import multer from 'multer';
 import CloudinaryService from '../common/services/cloudinary/cloudinary.service';
 import { runCallbackMiddlewareAsPromise } from '../common/services/cloudinary/middleware/cloudinary.middleware';
