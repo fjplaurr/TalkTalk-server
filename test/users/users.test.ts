@@ -3,7 +3,6 @@ import shortid from 'shortid';
 import supertest from 'supertest';
 import { User } from '../../users/types/users';
 import { CreateUserPayload, PatchUserPayload } from '../../users/types/dto';
-// import { stopServer } from '../../server';
 import app, { stopServer } from '../../index';
 
 export const request: supertest.SuperAgentTest = supertest.agent(app);
@@ -43,6 +42,21 @@ describe('users endpoints', () => {
 
       expect(res.status).to.equal(400);
       expect(res.error).to.be.ok;
+    });
+
+    it('returns an error if the email already exists', async () => {
+      await createUser(createUserPayloadDefault);
+
+      const createRepeatedUserResponse = await createUser({
+        ...createUserPayloadDefault,
+      });
+
+      const found = createRepeatedUserResponse.body.errors?.some(
+        (error: { msg: string }) => error.msg === 'Email already exists'
+      );
+
+      expect(createRepeatedUserResponse.status).to.equal(400);
+      expect(found).to.be.true;
     });
   });
 

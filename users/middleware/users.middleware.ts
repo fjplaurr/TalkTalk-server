@@ -6,7 +6,7 @@ class UsersMiddleware {
   async validateSameEmailDoesntExist(email: string) {
     const user = await UsersService.getUserByEmail(email);
     if (user) {
-      throw new Error(`User email already exists`);
+      throw new Error(`Email already exists`);
     }
   }
 
@@ -22,7 +22,7 @@ class UsersMiddleware {
         minUppercase: 0,
       })
       .withMessage(
-        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters.'
+        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters'
       ),
     body('firstName').isString(),
     body('lastName').isString(),
