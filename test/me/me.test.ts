@@ -3,10 +3,10 @@ import { expect } from 'chai';
 import path from 'path';
 import fs from 'fs/promises';
 import shortid from 'shortid';
-import app, { stopServer } from '../../index';
-import { createJWT } from '../../auth/auth.controller';
-import { createUser } from '../users/users.test';
-import type { CreateUserPayload } from '../../users/types/dto';
+import { createUser } from '@test/users/users.test';
+import type { CreateUserPayload } from '@users/types/dto';
+import { createJWT } from '@auth/auth.controller';
+import app, { stopServer } from 'index';
 
 export const request: supertest.SuperAgentTest = supertest.agent(app);
 

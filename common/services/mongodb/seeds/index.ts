@@ -1,7 +1,7 @@
+import type { User } from '@users/types/users';
+import type { Post } from '@posts/types/posts';
 import { getPostsSeeds } from './posts';
 import { getUsersSeeds } from './users';
-import type { User } from '../../../../users/types/users';
-import type { Post } from '../../../../posts/types/posts';
 
 type Seeds = { collectionName: string; data: (User | Post)[] }[];
 

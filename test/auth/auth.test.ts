@@ -1,8 +1,8 @@
 import supertest from 'supertest';
 import { expect } from 'chai';
 import shortid from 'shortid';
-import app, { stopServer } from '../../index';
-import type { User } from '../../users/types/users';
+import type { User } from '@users/types/users';
+import app, { stopServer } from 'index';
 
 export const request: supertest.SuperAgentTest = supertest.agent(app);
 

@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import type { Request, Response } from 'express';
 import multer from 'multer';
+import UsersService from '@users/users.service';
 import CloudinaryService from '../common/services/cloudinary/cloudinary.service';
 import { runCallbackMiddlewareAsPromise } from '../common/services/cloudinary/middleware/cloudinary.middleware';
-import UsersService from '../users/users.service';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });

@@ -1,8 +1,8 @@
 import express from 'express';
 import { body } from 'express-validator';
+import usersMiddleware from '@users/middleware/users.middleware';
 import AuthController from './auth.controller';
 import authMiddleware from './middleware/auth.middleware';
-import usersMiddleware from '../users/middleware/users.middleware';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
 
 const router = express.Router();

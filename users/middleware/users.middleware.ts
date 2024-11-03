@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
-import UsersService from '../users.service';
-import BodyValidationMiddleware from '../../common/middleware/body.validation.middleware';
+import UsersService from '@users/users.service';
+import BodyValidationMiddleware from '@common/middleware/body.validation.middleware';
 
 class UsersMiddleware {
   async validateSameEmailDoesntExist(email: string) {

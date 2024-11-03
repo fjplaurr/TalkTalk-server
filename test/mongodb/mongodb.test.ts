@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import { expect } from 'chai';
-import app, { stopServer } from '../../index';
+import app, { stopServer } from 'index';
 
 export const request: supertest.SuperAgentTest = supertest.agent(app);
 

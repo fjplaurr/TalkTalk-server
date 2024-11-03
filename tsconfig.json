@@ -8,12 +8,17 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@auth/*": ["./auth/*"],
+      "@common/*": ["./common/*"],
+      "@me/*": ["./me/*"],
+      "@posts/*": ["./posts/*"],
+      "@test/*": ["./test/*"],
+      "@users/*": ["./users/*"]
+    }
   },
-  "include": [
-    "**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }
