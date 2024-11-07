@@ -7,11 +7,11 @@ if (process.env.NODE_ENV === 'development') {
 import express from 'express';
 import cors from 'cors';
 import type http from 'http';
-import usersRoutes from './users/users.routes.config';
-import meRoutes from './me/me.routes.config';
-import postsRoutes from './posts/posts.routes.config';
-import authRoutes from './auth/auth.routes.config';
-import mongodbRoutes from './common/services/mongodb/mongodb.routes.config';
+import usersRoutes from './users/users.routes';
+import meRoutes from './me/me.routes';
+import postsRoutes from './posts/posts.routes';
+import authRoutes from './auth/auth.routes';
+import mongodbRoutes from './common/services/mongodb/mongodb.routes';
 import MongoDbService from './common/services/mongodb/mongodb.service';
 
 // Initializes express application
