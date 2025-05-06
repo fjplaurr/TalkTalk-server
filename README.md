@@ -110,6 +110,124 @@ The <b>Me</b> endpoints require the user to be authenticated with a Bearer token
 | ---------- | ------------- | ------------------------ |
 | POST       | /cloudinary/upload | Upload an image |
 
+## Examples of API Requests and Responses
+
+### Users Endpoints
+#### Create a User
+**Request:**
+```bash
+POST /users
+Content-Type: application/json
+{
+  "email": "example@example.com",
+  "password": "password123",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+```
+**Response:**
+```json
+{
+  "id": "user_id123"
+}
+```
+
+#### Retrieve All Users
+**Request:**
+```bash
+GET /users
+```
+**Response:**
+```json
+[
+  {
+    "_id": "user_id123",
+    "email": "example@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "followingUsers": [],
+    "status": "",
+    "pictureSrc": ""
+  }
+]
+```
+
+### Posts Endpoints
+#### Create a Post
+**Request:**
+```bash
+POST /posts
+Content-Type: application/json
+{
+  "text": "This is a post",
+  "authorId": "user_id123",
+  "date": "2025-05-07T12:00:00.000Z"
+}
+```
+**Response:**
+```json
+{
+  "id": "post_id123"
+}
+```
+
+#### Retrieve All Posts
+**Request:**
+```bash
+GET /posts
+```
+**Response:**
+```json
+[
+  {
+    "_id": "post_id123",
+    "text": "This is a post",
+    "authorId": "user_id123",
+    "date": "2025-05-07T12:00:00.000Z"
+  }
+]
+```
+
+### Authentication Endpoints
+#### Login
+**Request:**
+```bash
+POST /auth/login
+Content-Type: application/json
+{
+  "email": "example@example.com",
+  "password": "password123"
+}
+```
+**Response:**
+```json
+{
+  "accessToken": "jwt_token",
+  "user": {
+    "_id": "user_id123",
+    "email": "example@example.com",
+    "firstName": "John",
+    "lastName": "Doe"
+  }
+}
+```
+
+### Environment Variables
+| Variable Name              | Description                                |
+|----------------------------|--------------------------------------------|
+| `AUTHENTICATION_SECRET_KEY`| Secret key for JWT authentication.         |
+| `MONGO_URI`                | MongoDB connection string.                 |
+| `API_PORT`                 | Port on which the API runs.                |
+| `CLOUDINARY_API_KEY`       | API key for Cloudinary.                    |
+| `CLOUDINARY_API_SECRET`    | API secret for Cloudinary.                 |
+
+### Running Tests
+To run the test suite, use the following command:
+```bash
+npm test
+```
+This will execute all unit and integration tests located in the `test/` directory.
+
 ### Technologies Used
 
 - [Node.js](https://nodejs.org/)
