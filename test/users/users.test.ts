@@ -11,12 +11,12 @@ after(async () => {
   await stopServer();
 });
 
-const createUserPayloadDefault: CreateUserPayload = {
+const createUserPayloadDefault: () => CreateUserPayload = () => ({
   email: `mockUser+${shortid.generate()}@mockUser.com`,
   password: 'mockUser',
   firstName: 'mockFirstName',
   lastName: 'mockLastName',
-};
+});
 
 export const createUser = async (body: CreateUserPayload) =>
   request.post('/users').send(body);
@@ -24,32 +24,92 @@ export const createUser = async (body: CreateUserPayload) =>
 describe('users endpoints', () => {
   describe('POST to /users', () => {
     it('creates an user and returns its id', async () => {
-      const createUserResponse = await createUser(createUserPayloadDefault);
+      const createUserResponse = await createUser(createUserPayloadDefault());
 
       expect(createUserResponse.status).to.equal(201);
       expect(createUserResponse.body.id).to.be.a('string');
     });
 
     it('returns an error if email is missing in the request body', async () => {
-      const createUserResponse = await createUser(createUserPayloadDefault);
+      const createUserPayload: CreateUserPayload = {
+        email: '',
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
+        password: 'mockUser',
+      };
+
+      const createUserResponse = await createUser(createUserPayload);
 
       expect(createUserResponse.status).to.equal(400);
-      expect(createUserResponse.error).to.be.ok;
     });
 
-    it('returns an error if password is missing in the request body', async () => {
-      const res = await createUser(createUserPayloadDefault);
+    it('returns an error if password <6 chars in the request body', async () => {
+      const createUserPayload: CreateUserPayload = {
+        email: `mockUser+${shortid.generate()}@mockUser.com`,
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
+        password: 'fG45',
+      };
+
+      const res = await createUser(createUserPayload);
 
       expect(res.status).to.equal(400);
-      expect(res.error).to.be.ok;
+      expect(res.body.errors).to.be.an('array');
+      expect(res.body.errors[0]).to.be.an('object');
+      expect(res.body.errors[0]).to.have.property('msg');
+      expect(res.body.errors[0].msg).to.equal(
+        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters'
+      );
+    });
+
+    it('returns an error if password does not contain a lowercase letter', async () => {
+      const createUserPayload: CreateUserPayload = {
+        email: `mockUser+${shortid.generate()}@mockUser.com`,
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
+        password: 'MOCKUSER1!',
+      };
+
+      const res = await createUser(createUserPayload);
+
+      expect(res.status).to.equal(400);
+      expect(res.body.errors).to.be.an('array');
+      expect(res.body.errors[0]).to.be.an('object');
+      expect(res.body.errors[0]).to.have.property('msg');
+      expect(res.body.errors[0].msg).to.equal(
+        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters'
+      );
+    });
+
+    it('returns an error if password does not contain an uppercase letter', async () => {
+      const createUserPayload: CreateUserPayload = {
+        email: `mockUser+${shortid.generate()}@mockUser.com`,
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
+        password: 'mockuser1!',
+      };
+
+      const res = await createUser(createUserPayload);
+
+      expect(res.status).to.equal(400);
+      expect(res.body.errors).to.be.an('array');
+      expect(res.body.errors[0]).to.be.an('object');
+      expect(res.body.errors[0]).to.have.property('msg');
+      expect(res.body.errors[0].msg).to.equal(
+        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters'
+      );
     });
 
     it('returns an error if the email already exists', async () => {
-      await createUser(createUserPayloadDefault);
+      const createUserPayload: CreateUserPayload = {
+        email: `mockUser+${shortid.generate()}@mockUser.com`,
+        password: 'mockUser',
+        firstName: 'mockFirstName',
+        lastName: 'mockLastName',
+      };
+      await createUser(createUserPayload);
 
-      const createRepeatedUserResponse = await createUser({
-        ...createUserPayloadDefault,
-      });
+      const createRepeatedUserResponse = await createUser(createUserPayload);
 
       const found = createRepeatedUserResponse.body.errors?.some(
         (error: { msg: string }) => error.msg === 'Email already exists'

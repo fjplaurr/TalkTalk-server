@@ -11,11 +11,11 @@ after(async () => {
   await stopServer();
 });
 
-const createPostPayloadDefault = {
+const createPostPayloadDefault: () => CreatePostPayload = () => ({
   text: 'mockText',
   authorId: 'mockAuthorId',
   date: new Date('2023-07-19T23:15:30.000Z'),
-};
+});
 
 describe('posts endpoints', () => {
   const createPost = async (body: CreatePostPayload) =>
@@ -23,7 +23,7 @@ describe('posts endpoints', () => {
 
   describe('POST to /posts', () => {
     it('creates a post and returns its id', async () => {
-      const createPostResponse = await createPost(createPostPayloadDefault);
+      const createPostResponse = await createPost(createPostPayloadDefault());
 
       expect(createPostResponse.status).to.equal(201);
       expect(createPostResponse.body.id).to.be.a('string');
@@ -32,7 +32,7 @@ describe('posts endpoints', () => {
 
   describe('GET from /posts/:id', () => {
     it('returns a post', async () => {
-      const createPostResponse = await createPost(createPostPayloadDefault);
+      const createPostResponse = await createPost(createPostPayloadDefault());
 
       const res = await request
         .get(`/posts/${createPostResponse.body.id}`)
@@ -55,7 +55,7 @@ describe('posts endpoints', () => {
       const randomText = shortid.generate();
 
       const createPostPayload: CreatePostPayload = {
-        ...createPostPayloadDefault,
+        ...createPostPayloadDefault(),
         text: randomText,
       };
 
@@ -75,7 +75,7 @@ describe('posts endpoints', () => {
         text: 'mockTextModified',
       };
 
-      const createPostResponse = await createPost(createPostPayloadDefault);
+      const createPostResponse = await createPost(createPostPayloadDefault());
 
       const res = await request
         .patch(`/posts/${createPostResponse.body.id}`)

@@ -4,7 +4,7 @@ import JwtMiddleware from '../auth/middleware/jwt.middleware';
 
 const router = express.Router();
 
-router.post('/avatar', [
+router.patch('/avatar', [
   JwtMiddleware.validJWTNeeded,
   MeController.updateAvatar,
 ]);
