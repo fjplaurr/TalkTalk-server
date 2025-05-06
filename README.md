@@ -1,4 +1,26 @@
-# TalkTalk Api
+# TalkTalk API
+
+## Table of Contents
+
+1. [Description](#description)
+2. [Installation Guide](#installation-guide)
+   - [Prerequisites](#prerequisites)
+   - [Setup Instructions](#setup-instructions)
+3. [API Endpoints](#api-endpoints)
+   - [Users Endpoints](#users-endpoints)
+   - [Posts Endpoints](#posts-endpoints)
+   - [Authentication Endpoints](#authentication-endpoints)
+   - [Me Endpoints](#me-endpoints)
+   - [MongoDB](#mongodb)
+   - [Cloudinary](#cloudinary)
+4. [Examples of API Requests and Responses](#examples-of-api-requests-and-responses)
+   - [Users Endpoints](#users-endpoints-1)
+   - [Posts Endpoints](#posts-endpoints-1)
+   - [Authentication Endpoints](#authentication-endpoints-1)
+5. [Environment Variables](#environment-variables)
+6. [Running Tests](#running-tests)
+7. [Technologies Used](#technologies-used)
+8. [Authors](#authors)
 
 ## Description
 
@@ -213,6 +235,9 @@ Content-Type: application/json
 ```
 
 ### Environment Variables
+
+The application requires certain environment variables to function correctly. These variables are sensitive and should not be shared publicly. Below is a list of the required environment variables and their purposes:
+
 | Variable Name              | Description                                |
 |----------------------------|--------------------------------------------|
 | `AUTHENTICATION_SECRET_KEY`| Secret key for JWT authentication.         |
@@ -220,6 +245,10 @@ Content-Type: application/json
 | `API_PORT`                 | Port on which the API runs.                |
 | `CLOUDINARY_API_KEY`       | API key for Cloudinary.                    |
 | `CLOUDINARY_API_SECRET`    | API secret for Cloudinary.                 |
+
+#### Important:
+- **Do not hardcode these values in the codebase.** Use a `.env` file to store them securely.
+- **Never commit the `.env` file to version control.** Add it to your `.gitignore` file to prevent accidental exposure.
 
 ### Running Tests
 To run the test suite, use the following command:
