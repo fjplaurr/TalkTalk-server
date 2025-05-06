@@ -64,22 +64,22 @@ Choose the method that suits your preference and workflow.
 | HTTP Verbs | Endpoints                | Action                                  |
 | ---------- | ------------------------ | --------------------------------------- |
 | GET        | /users                   | Retrieve all users                      |
-| GET        | /users/:userId           | Retrieve a user                         |
+| GET        | /users/:id               | Retrieve a user                         |
 | POST       | /users                   | Save a new user                         |
-| POST       | /users/:userId/posts     | Retrieve all posts from a user          |
-| PATCH      | /users/:userId           | Edit a user                             |
-| DELETE     | /users/:userId           | Delete a user                           |
-| GET        | /users/:userId/following | Retrieve users being followed by a user |
+| GET        | /users/:id/posts         | Retrieve all posts from a user          |
+| PATCH      | /users/:id               | Edit a user                             |
+| DELETE     | /users/:id               | Delete a user                           |
+| GET        | /users/:id/following     | Retrieve users being followed by a user |
 
 #### <b><u>Posts Endpoints</u></b>
 
 | HTTP Verbs | Endpoints      | Action             |
 | ---------- | -------------- | ------------------ |
 | GET        | /posts         | Retrieve all posts |
-| GET        | /posts/:postId | Retrieve a post    |
+| GET        | /posts/:id     | Retrieve a post    |
 | POST       | /posts         | Save a new post    |
-| PATCH      | /posts/:postId | Edit a post        |
-| DELETE     | /users/:postId | Delete a post      |
+| PATCH      | /posts/:id     | Edit a post        |
+| DELETE     | /posts/:id     | Delete a post      |
 
 #### <b><u>Authentication Endpoints</u></b>
 
@@ -92,9 +92,10 @@ Choose the method that suits your preference and workflow.
 
 The <b>Me</b> endpoints require the user to be authenticated with a Bearer token. 
 
-| HTTP Verbs | Endpoints     | Action                   |
-| ---------- | ------------- | ------------------------ |
-| POST       | /me/avatar | Edit the authenticated user's avatar |
+| HTTP Verbs | Endpoints       | Action                           |
+| ---------- | --------------- | -------------------------------- |
+| POST       | /me/avatar      | Edit the authenticated user's avatar |
+| PATCH      | /me/profile     | Update the authenticated user's profile |
 
 #### <b><u>MongoDB</u></b>
 
