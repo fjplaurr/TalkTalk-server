@@ -15,12 +15,12 @@ class MongoDbController {
 
   async seedDB(req: Request, res: Response) {
     try {
-      await MongoDbService.seedDB();
-      return res.status(201).send();
+      const wasSeeded = await MongoDbService.seedDB();
+      return wasSeeded ? res.status(201).send() : res.status(500).send();
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(`It was not possible to reseed the database:`, err);
-      return res.sendStatus(422);
+      return res.sendStatus(500);
     }
   }
 }

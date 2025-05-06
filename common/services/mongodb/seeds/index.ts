@@ -4,20 +4,23 @@ import { getPostsSeeds } from './posts';
 import { getUsersSeeds } from './users';
 
 type Seeds = { collectionName: string; data: (User | Post)[] }[];
+type GetSeeds = () => Seeds;
 
-const getSeeds: () => Promise<Seeds> = async () => {
+const getSeeds: GetSeeds = () => {
   const seeds = [
+    {
+      collectionName: 'users',
+      data: getUsersSeeds(),
+    },
     {
       collectionName: 'posts',
       data: getPostsSeeds(),
-    },
-    {
-      collectionName: 'users',
-      data: await getUsersSeeds(),
     },
   ];
 
   return seeds;
 };
 
-export { getSeeds };
+type GetSeedsReturnType = ReturnType<typeof getSeeds>;
+
+export { getSeeds, GetSeedsReturnType };

@@ -1,6 +1,7 @@
 import type { Collection, Db, Document } from 'mongodb';
 import { MongoClient } from 'mongodb';
 import type http from 'http';
+import type { GetSeedsReturnType } from './seeds';
 import { getSeeds } from './seeds';
 
 const URL = process.env.MONGO_URI!;
@@ -141,15 +142,24 @@ class MongoDbService {
     return null;
   }
 
-  async seedDB() {
+  async seedDB(): Promise<boolean> {
     if (this.database !== null) {
-      await this.dropDB();
-      const seeds = await getSeeds();
-      seeds.forEach(async (seed) => {
-        this.setCollection(seed.collectionName);
-        await this.createMany(seed.data as Document[]);
-      });
+      try {
+        await this.dropDB();
+        const seeds: GetSeedsReturnType = getSeeds();
+        await Promise.all(
+          seeds.map(async (seed) => {
+            this.setCollection(seed.collectionName);
+            await this.createMany(seed.data as Document[]);
+          })
+        );
+        return true;
+      } catch (error) {
+        console.error('Error during seeding:', error);
+        return false;
+      }
     }
+    return false;
   }
 }
 
