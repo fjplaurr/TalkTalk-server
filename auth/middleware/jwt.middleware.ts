@@ -9,20 +9,24 @@ class JwtMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    if (req.headers.authorization) {
-      try {
-        const authorization = req.headers.authorization.split(' ');
-        if (authorization[0] !== 'Bearer') {
-          return res.status(401).send();
-        }
-        res.locals.jwt = jwt.verify(authorization[1], jwtSecret);
-        return next();
-      } catch (err) {
-        console.error('JWT verification error:', err);
-        return res.status(401).send();
-      }
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return res.status(401).send();
     }
-    return res.status(401).send();
+
+    const [scheme, token] = authHeader.split(' ');
+    if (scheme !== 'Bearer' || !token) {
+      return res.status(401).send();
+    }
+
+    try {
+      res.locals.jwt = jwt.verify(token, jwtSecret);
+      return next();
+    } catch (err) {
+      console.error('JWT verification error:', err);
+      return res.status(401).send();
+    }
   }
 }
 

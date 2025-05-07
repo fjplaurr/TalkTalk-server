@@ -2,6 +2,8 @@ import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import UsersService from '@users/users.service';
 import type { User } from '@users/types/users';
+import type { CreateUserPayload } from '@users/types/dto';
+import type { AuthMiddlewareLocals } from './middleware/auth.middleware';
 
 const jwtSecret: string = process.env.AUTHENTICATION_SECRET_KEY!;
 const tokenExpirationInSeconds = 36000;
@@ -12,16 +14,13 @@ export const createJWT = (payload: object): string =>
   });
 class AuthController {
   async login(req: Request, res: Response) {
-    const user: User | null = await UsersService.getUserByEmail(req.body.email);
-    if (!user) {
-      return res.status(404).send();
-    }
+    const { user } = res.locals as AuthMiddlewareLocals;
     const accessToken: string = createJWT({ userId: user._id });
     return res.status(201).send({ accessToken, user });
   }
 
   async signup(
-    req: Request,
+    req: Request<{}, {}, CreateUserPayload>,
     res: Response
   ): Promise<Response<{ accessToken: string; user: User | null }>> {
     const userId: string = await UsersService.create(req.body);
