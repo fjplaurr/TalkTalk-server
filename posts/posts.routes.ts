@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/', jwtMiddleware.validJWTNeeded, PostsController.create);
 router.get('/:id', PostsController.readById);
 router.get('/', PostsController.readAll);
-router.patch('/:id', PostsController.updateById);
+router.patch('/:id', jwtMiddleware.validJWTNeeded, PostsController.updateById);
 router.delete('/:id', PostsController.deleteById);
 
 export default router;

@@ -10,7 +10,7 @@ export const request: supertest.SuperAgentTest = supertest.agent(app);
 
 const MOCK_TEXT = 'mockText';
 const MOCK_AUTHOR_ID = 'mockAuthorId';
-const MOCK_DATE = new Date('2023-07-19T23:15:30.000Z');
+const MOCK_DATE = new Date();
 
 const createPostPayloadDefault: () => CreatePostPayload = () => ({
   text: MOCK_TEXT,

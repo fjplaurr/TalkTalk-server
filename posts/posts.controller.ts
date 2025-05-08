@@ -22,7 +22,7 @@ class PostsController {
   async create(req: RequestWithBody<CreatePostPayload>, res: Response) {
     const postId = await PostsService.create({
       ...req.body,
-      authorId: res.locals.jwt.authorId,
+      authorId: res.locals.jwt.userId,
     });
     res.status(201).send({ id: postId });
   }
@@ -31,20 +31,34 @@ class PostsController {
     req: RequestWithParamsAndBody<PatchPostPayload, { id: string }>,
     res: Response
   ) {
+    const { userId } = res.locals.jwt;
+
+    const post = await PostsService.readById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    if (post?.authorId !== userId) {
+      return res
+        .status(403)
+        .json({ message: 'You are not authorized to update this post' });
+    }
+
     const updatedResult = await PostsService.updateById(
       req.params.id,
       req.body
     );
 
     if (updatedResult?.matchedCount === 0) {
-      return res.status(404).json({ message: 'Document not found' });
+      return res.status(404).json({ message: 'Post could not be updated' });
     }
 
     if (updatedResult?.modifiedCount && updatedResult.modifiedCount > 0) {
       return res.status(200).send();
     }
 
-    return res.status(304).send();
+    return res.status(204).send();
   }
 
   async deleteById(req: RequestWithParams<{ id: string }>, res: Response) {
