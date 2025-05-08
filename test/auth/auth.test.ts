@@ -15,12 +15,13 @@ export type SignupPayload = Pick<
   'password' | 'email' | 'firstName' | 'lastName'
 >;
 
-const signupPayload: SignupPayload = {
+type GetSignupPayload = () => SignupPayload;
+export const getSignupPayload: GetSignupPayload = () => ({
   email: `mockUser+${shortid.generate()}@mockUser.com`,
   password: 'mockUser',
   firstName: 'mockFirstName',
   lastName: 'mockLastName',
-};
+});
 
 export type LoginPayload = Pick<User, 'password' | 'email'>;
 
@@ -33,6 +34,7 @@ export const login = async (body: LoginPayload) =>
 describe('auth endpoints', () => {
   describe('POST to /signup', () => {
     it('successfully signs up a new user', async () => {
+      const signupPayload = getSignupPayload();
       const signupResponse = await signup(signupPayload);
 
       const { user, accessToken } = signupResponse.body;
@@ -45,6 +47,7 @@ describe('auth endpoints', () => {
     });
 
     it('fails to sign up with an already registered email', async () => {
+      const signupPayload = getSignupPayload();
       await signup(signupPayload);
 
       const duplicateSignupResponse = await signup(signupPayload);
@@ -53,6 +56,7 @@ describe('auth endpoints', () => {
     });
 
     it('fails to sign up if the email is invalid', async () => {
+      const signupPayload = getSignupPayload();
       await signup(signupPayload);
 
       const signupPayloadWithoutEmail = {
@@ -66,6 +70,7 @@ describe('auth endpoints', () => {
     });
 
     it('fails to sign up if the email is invalid', async () => {
+      const signupPayload = getSignupPayload();
       await signup(signupPayload);
 
       const signupPayloadWithoutEmail = {
@@ -80,6 +85,7 @@ describe('auth endpoints', () => {
   });
   describe('POST to /login', () => {
     it('logs in an existing user with user and password', async () => {
+      const signupPayload = getSignupPayload();
       await signup(signupPayload);
 
       const loginPayload: LoginPayload = {

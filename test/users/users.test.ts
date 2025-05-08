@@ -11,7 +11,7 @@ after(async () => {
   await stopServer();
 });
 
-const createUserPayloadDefault: () => CreateUserPayload = () => ({
+export const createUserPayloadDefault: () => CreateUserPayload = () => ({
   email: `mockUser+${shortid.generate()}@mockUser.com`,
   password: 'mockUser',
   firstName: 'mockFirstName',

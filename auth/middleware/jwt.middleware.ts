@@ -1,14 +1,10 @@
-import type express from 'express';
 import jwt from 'jsonwebtoken';
+import type { Response, Request, NextFunction } from 'express';
 
 const jwtSecret: string = process.env.AUTHENTICATION_SECRET_KEY!;
 
 class JwtMiddleware {
-  validJWTNeeded(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
+  validJWTNeeded(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {

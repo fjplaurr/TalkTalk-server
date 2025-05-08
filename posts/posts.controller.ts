@@ -20,7 +20,10 @@ class PostsController {
   }
 
   async create(req: RequestWithBody<CreatePostPayload>, res: Response) {
-    const postId = await PostsService.create(req.body);
+    const postId = await PostsService.create({
+      ...req.body,
+      authorId: res.locals.jwt.authorId,
+    });
     res.status(201).send({ id: postId });
   }
 

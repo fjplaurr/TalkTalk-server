@@ -43,6 +43,5 @@
         "patterns": ["../../*"]
       }
     ]
-    // "import/no-unresolved": "off"
   }
 }
