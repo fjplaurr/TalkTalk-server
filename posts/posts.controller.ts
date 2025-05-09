@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import type { JwtPayload } from '@auth/auth.controller';
 import PostsService from './posts.service';
 import type {
   CreatePostPayload,
@@ -62,7 +63,7 @@ class PostsController {
   }
 
   async deleteById(req: RequestWithParams<{ id: string }>, res: Response) {
-    const { userId } = res.locals.jwt;
+    const { userId } = res.locals.jwt as JwtPayload;
 
     const post = await PostsService.readById(req.params.id);
 

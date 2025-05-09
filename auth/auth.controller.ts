@@ -8,10 +8,15 @@ import type { AuthMiddlewareLocals } from './middleware/auth.middleware';
 const jwtSecret: string = process.env.AUTHENTICATION_SECRET_KEY!;
 const tokenExpirationInSeconds = 36000;
 
-export const createJWT = (payload: object): string =>
+export type JwtPayload = {
+  userId: string;
+};
+
+export const createJWT = (payload: JwtPayload): string =>
   jwt.sign(payload, jwtSecret, {
     expiresIn: tokenExpirationInSeconds,
   });
+
 class AuthController {
   async login(req: Request, res: Response) {
     const { user } = res.locals as AuthMiddlewareLocals;
