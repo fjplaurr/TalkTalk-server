@@ -183,28 +183,4 @@ describe('users endpoints', () => {
       expect(res.status).to.equal(404);
     });
   });
-
-  describe('DELETE to /users/:userId', () => {
-    it('deletes an user and returns a 204 status code', async () => {
-      const createUserPayload: CreateUserPayload = {
-        email: `mockUser+${shortid.generate()}@mockUser.com`,
-        password: 'mockUser',
-        firstName: 'mockFirstName',
-        lastName: 'mockLastName',
-      };
-
-      const createUserResponse = await createUser(createUserPayload);
-
-      const deleteUserResponse = await request
-        .delete(`/users/${createUserResponse.body.id}`)
-        .send();
-
-      const getUserResponse = await request
-        .get(`/users/${createUserResponse.body.id}`)
-        .send();
-
-      expect(getUserResponse.body).to.be.empty;
-      expect(deleteUserResponse.status).to.equal(204);
-    });
-  });
 });

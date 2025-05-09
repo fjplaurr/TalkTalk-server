@@ -1,12 +1,9 @@
 import type { Request, Response } from 'express';
-import argon2 from 'argon2';
 import UsersService from './users.service';
 import type {
   CreateUserPayload,
-  PatchUserPayload,
   RequestWithBody,
   RequestWithParams,
-  RequestWithParamsAndBody,
 } from './types/dto';
 
 class UsersController {

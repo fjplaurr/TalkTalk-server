@@ -57,6 +57,18 @@ class MeController {
 
     return res.status(304).send();
   }
+
+  async deleteProfile(req: Request, res: Response) {
+    const { userId } = res.locals.jwt;
+
+    const deleteResult = await UsersService.deleteById(userId);
+
+    if (!deleteResult) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(204).send();
+  }
 }
 
 export default new MeController();

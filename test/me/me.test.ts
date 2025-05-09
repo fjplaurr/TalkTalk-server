@@ -199,4 +199,21 @@ describe('me endpoints', () => {
       expect(updateProfileResponse.status).to.equal(304);
     });
   });
+
+  describe('DELETE to /me', () => {
+    it('deletes the current user and returns a 204 status code', async () => {
+      const createUserPayload = getCreateUserPayloadDefault();
+
+      const createUserResponse = await createUser(createUserPayload);
+
+      const validToken = createJWT({ userId: createUserResponse.body.id });
+
+      const deleteUserResponse = await request
+        .delete('/me')
+        .set('Authorization', `Bearer ${validToken}`)
+        .send();
+
+      expect(deleteUserResponse.status).to.equal(204);
+    });
+  });
 });
