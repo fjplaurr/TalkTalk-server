@@ -136,5 +136,30 @@ describe('Posts Endpoints', () => {
       expect(deleteResponse.status).to.equal(204);
       expect(getResponse.body).to.be.empty;
     });
+
+    it('should return a 404 status code for a non-existent post', async () => {
+      const res = await request
+        .delete(`/posts/${shortid.generate()}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send();
+
+      expect(res.status).to.equal(404);
+    });
+
+    it('should return a 403 status code for unauthorized user', async () => {
+      const createPostResponse = await createPost(createPostPayloadDefault());
+
+      // Create a new user and get their access token
+      const signupPayload = getSignupPayload();
+      const signupResponse = await signup(signupPayload);
+      const { accessToken: accessTokenFromUser } = signupResponse.body;
+
+      const deleteResponse = await request
+        .delete(`/posts/${createPostResponse.body.id}`)
+        .set('Authorization', `Bearer ${accessTokenFromUser}`)
+        .send();
+
+      expect(deleteResponse.status).to.equal(403);
+    });
   });
 });

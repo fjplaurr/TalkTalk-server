@@ -62,8 +62,22 @@ class PostsController {
   }
 
   async deleteById(req: RequestWithParams<{ id: string }>, res: Response) {
+    const { userId } = res.locals.jwt;
+
+    const post = await PostsService.readById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    if (post.authorId !== userId) {
+      return res
+        .status(403)
+        .json({ message: 'You are not authorized to delete this post' });
+    }
     await PostsService.deleteById(req.params.id);
-    res.status(204).send();
+
+    return res.status(204).send();
   }
 
   async readPostsByUserId(

@@ -8,6 +8,6 @@ router.post('/', jwtMiddleware.validJWTNeeded, PostsController.create);
 router.get('/:id', PostsController.readById);
 router.get('/', PostsController.readAll);
 router.patch('/:id', jwtMiddleware.validJWTNeeded, PostsController.updateById);
-router.delete('/:id', PostsController.deleteById);
+router.delete('/:id', jwtMiddleware.validJWTNeeded, PostsController.deleteById);
 
 export default router;
