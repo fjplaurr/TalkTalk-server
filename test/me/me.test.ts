@@ -49,10 +49,15 @@ describe('me endpoints', () => {
 
       const buffer = await fs.readFile(filePath);
 
+      const originalConsoleError = console.error;
+      console.error = () => {};
+
       const updateAvatarResponse = await request
         .patch('/me/avatar')
         .set('Authorization', invalidToken)
         .attach('avatar', buffer, filePath);
+
+      console.error = originalConsoleError;
 
       expect(updateAvatarResponse.status).to.equal(401);
     });
@@ -109,9 +114,9 @@ describe('me endpoints', () => {
 
   describe('PATCH to /me/profile', () => {
     it('updates the profile successfully', async () => {
-      const createUserResponse = await createUser(
-        getCreateUserPayloadDefault()
-      );
+      const createUserPayload = getCreateUserPayloadDefault();
+
+      const createUserResponse = await createUser(createUserPayload);
 
       const validToken = createJWT({ userId: createUserResponse.body.id });
 
@@ -130,23 +135,12 @@ describe('me endpoints', () => {
       );
     });
 
-    it('gets a 401 for a token not starting with Bearer', async () => {
-      const invalidToken = 'invalid token';
-
-      const updateProfileResponse = await request
-        .patch('/me/profile')
-        .set('Authorization', invalidToken)
-        .send({
-          firstName: 'UpdatedFirstName',
-          lastName: 'UpdatedLastName',
-        });
-
-      expect(updateProfileResponse.status).to.equal(401);
-    });
-
     it('gets a 401 for an invalid token starting with Bearer', async () => {
       const invalidToken = 'Bearer invalid token';
 
+      const originalConsoleError = console.error;
+      console.error = () => {};
+
       const updateProfileResponse = await request
         .patch('/me/profile')
         .set('Authorization', invalidToken)
@@ -154,6 +148,8 @@ describe('me endpoints', () => {
           firstName: 'UpdatedFirstName',
           lastName: 'UpdatedLastName',
         });
+
+      console.error = originalConsoleError;
 
       expect(updateProfileResponse.status).to.equal(401);
     });

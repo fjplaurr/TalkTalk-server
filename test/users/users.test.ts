@@ -171,27 +171,6 @@ describe('users endpoints', () => {
   });
 
   describe('PATCH to /users/:userId', () => {
-    it('patches an user and returns a 200 status code', async () => {
-      const patchUserPayload: PatchUserPayload = {
-        firstName: 'mockUser',
-      };
-
-      const createUserPayload: CreateUserPayload = {
-        email: `mockUser+${shortid.generate()}@mockUser.com`,
-        password: 'mockUser',
-        firstName: 'mockFirstName',
-        lastName: 'mockLastName',
-      };
-
-      const createUserResponse = await createUser(createUserPayload);
-
-      const res = await request
-        .patch(`/users/${createUserResponse.body.id}`)
-        .send(patchUserPayload);
-
-      expect(res.status).to.equal(204);
-    });
-
     it('does not patch a non existing user and returns a 404 status code', async () => {
       const patchUserPayload: PatchUserPayload = {
         firstName: 'mockUser',

@@ -12,7 +12,6 @@ router.post('/', [
 
 router.get('/:id', UsersController.readById);
 router.get('/', UsersController.readAll);
-router.patch('/:id', UsersController.updateById);
 router.delete('/:id', UsersController.deleteById);
 
 router.get('/:id/following', UsersController.readFollowing);
