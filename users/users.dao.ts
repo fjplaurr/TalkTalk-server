@@ -36,6 +36,7 @@ class UsersDao {
       followingUsers: [],
       pictureSrc: '',
       status: '',
+      role: 'user',
     });
 
     return id;

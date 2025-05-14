@@ -2,11 +2,9 @@ import supertest from 'supertest';
 import { expect } from 'chai';
 import path from 'path';
 import fs from 'fs/promises';
-import shortid from 'shortid';
-import { createUser } from '@test/users/users.test';
-import type { CreateUserPayload } from '@users/types/dto';
 import { createJWT } from '@auth/auth.controller';
 import app, { stopServer } from 'index';
+import { createUser } from '@test/utils';
 
 export const request: supertest.SuperAgentTest = supertest.agent(app);
 
@@ -14,21 +12,12 @@ after(async () => {
   await stopServer();
 });
 
-const getCreateUserPayloadDefault: () => CreateUserPayload = () => ({
-  email: `mockUser+${shortid.generate()}@mockUser.com`,
-  password: 'mockUser',
-  firstName: 'mockFirstName',
-  lastName: 'mockLastName',
-});
-
 describe('me endpoints', () => {
   describe('PATCH to /me/avatar', () => {
     it('updates the avatar', async () => {
-      const createUserResponse = await createUser(
-        getCreateUserPayloadDefault()
-      );
+      const { id } = await createUser();
 
-      const validToken = createJWT({ userId: createUserResponse.body.id });
+      const validToken = createJWT({ userId: id });
 
       const filePath = path.join(__dirname, 'dog.jpg');
 
@@ -69,7 +58,6 @@ describe('me endpoints', () => {
 
       const buffer = await fs.readFile(filePath);
 
-      // Override console.error ot prevent output from appearing in the console
       const originalConsoleError = console.error;
       console.error = () => {};
 
@@ -114,11 +102,9 @@ describe('me endpoints', () => {
 
   describe('PATCH to /me/profile', () => {
     it('updates the profile successfully', async () => {
-      const createUserPayload = getCreateUserPayloadDefault();
+      const { id } = await createUser();
 
-      const createUserResponse = await createUser(createUserPayload);
-
-      const validToken = createJWT({ userId: createUserResponse.body.id });
+      const validToken = createJWT({ userId: id });
 
       const updateProfileResponse = await request
         .patch('/me/profile')
@@ -129,10 +115,7 @@ describe('me endpoints', () => {
         });
 
       expect(updateProfileResponse.status).to.equal(200);
-      expect(updateProfileResponse.body).to.have.property(
-        'id',
-        createUserResponse.body.id
-      );
+      expect(updateProfileResponse.body).to.have.property('id', id);
     });
 
     it('gets a 401 for an invalid token starting with Bearer', async () => {
@@ -182,11 +165,9 @@ describe('me endpoints', () => {
     });
 
     it('gets a 304 if no changes are made to the profile', async () => {
-      const createUserPayload = getCreateUserPayloadDefault();
+      const { id, createUserPayload } = await createUser();
 
-      const createUserResponse = await createUser(createUserPayload);
-
-      const validToken = createJWT({ userId: createUserResponse.body.id });
+      const validToken = createJWT({ userId: id });
 
       const updateProfileResponse = await request
         .patch('/me/profile')
@@ -202,11 +183,9 @@ describe('me endpoints', () => {
 
   describe('DELETE to /me', () => {
     it('deletes the current user and returns a 204 status code', async () => {
-      const createUserPayload = getCreateUserPayloadDefault();
+      const { id } = await createUser();
 
-      const createUserResponse = await createUser(createUserPayload);
-
-      const validToken = createJWT({ userId: createUserResponse.body.id });
+      const validToken = createJWT({ userId: id });
 
       const deleteUserResponse = await request
         .delete('/me')

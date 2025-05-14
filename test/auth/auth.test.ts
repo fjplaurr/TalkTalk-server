@@ -69,18 +69,73 @@ describe('auth endpoints', () => {
       expect(signupResponse.status).to.equal(400);
     });
 
-    it('fails to sign up if the email is invalid', async () => {
+    it('returns an error if the email already exists', async () => {
+      const signupPayload = getSignupPayload();
+      await signup(signupPayload);
+      const signupPayloadWithDuplicateEmail = {
+        ...signupPayload,
+        email: signupPayload.email,
+      };
+      const signupResponse = await signup(signupPayloadWithDuplicateEmail);
+
+      const found = signupResponse.body.errors?.some(
+        (error: { msg: string }) => error.msg === 'Email already exists'
+      );
+
+      expect(signupResponse.status).to.equal(400);
+      expect(found).to.be.true;
+    });
+
+    it('fails to sign up if the password is invalid', async () => {
       const signupPayload = getSignupPayload();
       await signup(signupPayload);
 
-      const signupPayloadWithoutEmail = {
+      const signupPayloadWithoutPassword = {
         ...signupPayload,
         password: 'invalid password',
       };
 
-      const signupResponse = await signup(signupPayloadWithoutEmail);
+      const signupResponse = await signup(signupPayloadWithoutPassword);
 
       expect(signupResponse.status).to.equal(400);
+    });
+
+    it('returns an error if password <6 chars in the request body', async () => {
+      const signupPayload = { ...getSignupPayload(), password: 'fG45' };
+
+      const res = await signup(signupPayload);
+
+      expect(res.status).to.equal(400);
+      expect(res.body.errors).to.be.an('array');
+      expect(res.body.errors[0]).to.be.an('object');
+      expect(res.body.errors[0]).to.have.property('msg');
+      expect(res.body.errors[0].msg).to.equal(
+        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters'
+      );
+    });
+
+    it('returns an error if password does not contain a lowercase letter', async () => {
+      const signupPayload = { ...getSignupPayload(), password: 'MOCKUSER1!' };
+      const res = await signup(signupPayload);
+      expect(res.status).to.equal(400);
+      expect(res.body.errors).to.be.an('array');
+      expect(res.body.errors[0]).to.be.an('object');
+      expect(res.body.errors[0]).to.have.property('msg');
+      expect(res.body.errors[0].msg).to.equal(
+        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters'
+      );
+    });
+
+    it('returns an error if password does not contain an uppercase letter', async () => {
+      const signupPayload = { ...getSignupPayload(), password: 'mockuser1!' };
+      const res = await signup(signupPayload);
+      expect(res.status).to.equal(400);
+      expect(res.body.errors).to.be.an('array');
+      expect(res.body.errors[0]).to.be.an('object');
+      expect(res.body.errors[0]).to.have.property('msg');
+      expect(res.body.errors[0].msg).to.equal(
+        'Please use a password that is at least 6 characters long and includes both lowercase and uppercase letters'
+      );
     });
   });
   describe('POST to /login', () => {

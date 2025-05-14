@@ -12,6 +12,7 @@ const getUsersSeeds: GetUsersSeeds = () => [
     followingUsers: ['user_id2', 'user_id3'],
     status: 'Crafting digital magic behind the scenes.',
     pictureSrc: 'https://placedog.net/600',
+    role: 'user',
   },
   {
     _id: 'user_id2',
@@ -22,6 +23,7 @@ const getUsersSeeds: GetUsersSeeds = () => [
     followingUsers: ['user_id1'],
     status: 'Weaving stories from bits and bytes.',
     pictureSrc: 'https://placedog.net/590',
+    role: 'user',
   },
   {
     _id: 'user_id3',
@@ -32,6 +34,7 @@ const getUsersSeeds: GetUsersSeeds = () => [
     followingUsers: ['user_id2', 'user_id4'],
     status: 'Juggling data to uncover hidden patterns.',
     pictureSrc: 'https://placedog.net/490',
+    role: 'user',
   },
   {
     _id: 'user_id4',
@@ -42,6 +45,7 @@ const getUsersSeeds: GetUsersSeeds = () => [
     followingUsers: ['user_id2', 'user_id3'],
     status: 'Cooking up something exciting in the data kitchen.',
     pictureSrc: 'https://placedog.net/390',
+    role: 'user',
   },
 ];
 
