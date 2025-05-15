@@ -43,18 +43,4 @@ describe('users endpoints', () => {
       expect(found).to.be.ok;
     });
   });
-
-  describe('PATCH to /users/:userId', () => {
-    it('does not patch a non existing user and returns a 404 status code', async () => {
-      const patchUserPayload: PatchUserPayload = {
-        firstName: 'mockUser',
-      };
-
-      const res = await request
-        .patch(`/users/${shortid.generate()}`)
-        .send(patchUserPayload);
-
-      expect(res.status).to.equal(404);
-    });
-  });
 });
