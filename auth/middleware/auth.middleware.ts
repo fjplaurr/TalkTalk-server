@@ -35,20 +35,6 @@ class AuthMiddleware {
 
     return res.status(400).send({ errors: ['Invalid email and/or password'] });
   }
-
-  async adminOnlyMiddleware(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    const { user } = res.locals as AuthMiddlewareLocals;
-
-    if (user.role === 'admin') {
-      return next();
-    }
-
-    return res.status(403).send({ errors: ['Admin access required'] });
-  }
 }
 
 export default new AuthMiddleware();

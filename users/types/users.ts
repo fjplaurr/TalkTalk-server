@@ -1,5 +1,3 @@
-export type UserRole = 'user' | 'admin';
-
 export type User = {
   _id: string;
   email: string;
@@ -9,5 +7,4 @@ export type User = {
   followingUsers: string[];
   status: string;
   pictureSrc: string;
-  role: UserRole;
 };

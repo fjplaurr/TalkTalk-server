@@ -36,6 +36,12 @@ class UsersService {
   async readFollowing(id: string) {
     return UsersDao.readFollowing(id);
   }
+
+  async followUser(user: User, followedUserId: string) {
+    return UsersDao.updateById(user._id, {
+      followingUsers: [...user.followingUsers, followedUserId],
+    });
+  }
 }
 
 export default new UsersService();

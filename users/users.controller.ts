@@ -31,6 +31,32 @@ class UsersController {
     const usersIds = await UsersService.readFollowing(req.params.id);
     res.status(200).send(usersIds);
   }
+
+  async followUser(req: RequestWithParams<{ id: string }>, res: Response) {
+    const { userId } = res.locals.jwt as { userId: string };
+    const { id: followedUserId } = req.params;
+
+    if (userId === followedUserId) {
+      return res.status(400).send({ message: 'You cannot follow yourself' });
+    }
+
+    // Check if the user and followed user exist
+    const user = await UsersService.readById(userId);
+    const followedUser = await UsersService.readById(followedUserId);
+    if (!user || !followedUser) {
+      return res.status(404).send();
+    }
+
+    if (user.followingUsers.includes(followedUserId)) {
+      return res
+        .status(400)
+        .send({ message: 'You are already following this user' });
+    }
+
+    await UsersService.followUser(user, followedUserId);
+
+    return res.status(204).send();
+  }
 }
 
 export default new UsersController();
