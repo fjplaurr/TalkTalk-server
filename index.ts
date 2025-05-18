@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
 
 let server: http.Server;
 
-export const startServer = async () => {
+export const startServer = async (): Promise<void> => {
   // Open mongodb connection
   await MongoDbService.connectWithRetry();
 
@@ -42,7 +42,7 @@ export const startServer = async () => {
   );
 };
 
-export const stopServer = async () => {
+export const stopServer = async (): Promise<void> => {
   // eslint-disable-next-line no-console
   server.close(() => console.log('Server stopped'));
 

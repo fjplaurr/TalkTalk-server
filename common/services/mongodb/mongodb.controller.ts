@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import MongoDbService from './mongodb.service';
 
 class MongoDbController {
-  async dropDB(req: Request, res: Response) {
+  async dropDB(req: Request, res: Response): Promise<Response> {
     try {
       await MongoDbService.dropDB();
       return res.status(204).send();
@@ -13,7 +13,7 @@ class MongoDbController {
     }
   }
 
-  async seedDB(req: Request, res: Response) {
+  async seedDB(req: Request, res: Response): Promise<Response> {
     try {
       const wasSeeded = await MongoDbService.seedDB();
       return wasSeeded ? res.status(201).send() : res.status(500).send();

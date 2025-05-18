@@ -1,4 +1,11 @@
-import type { Collection, Db, Document } from 'mongodb';
+import type {
+  Collection,
+  Db,
+  DeleteResult,
+  Document,
+  InsertManyResult,
+  UpdateResult,
+} from 'mongodb';
 import { MongoClient } from 'mongodb';
 import type http from 'http';
 import type { GetSeedsReturnType } from './seeds';
@@ -26,7 +33,7 @@ class MongoDbService {
     this.databaseName = DATABASE_NAME;
   }
 
-  setCollection(collectionName: string) {
+  setCollection(collectionName: string): void {
     if (this.database !== null) {
       try {
         this.collection = this.database.collection<Document>(collectionName);
@@ -37,7 +44,7 @@ class MongoDbService {
     }
   }
 
-  async connectWithRetry() {
+  async connectWithRetry(): Promise<void> {
     // eslint-disable-next-line no-console
     console.log('Attempting MongoDB connection (will retry if needed)');
     try {
@@ -57,18 +64,22 @@ class MongoDbService {
     }
   }
 
-  async close() {
+  async close(): Promise<boolean> {
     if (this.connection != null) {
       await this.connection.close();
+      return true;
     }
+    return false;
   }
 
-  async create<T extends Document>(document: T) {
+  async create<T extends Document>(document: T): Promise<boolean> {
     if (this.collection !== null) {
       const createdResult = await this.collection.insertOne(document);
-      return createdResult;
+      if (createdResult.acknowledged) {
+        return true;
+      }
     }
-    return null;
+    return false;
   }
 
   async readOne<T extends Document>(filter: Partial<T>): Promise<T | null> {
@@ -80,7 +91,7 @@ class MongoDbService {
     return null;
   }
 
-  async readMany<T extends Document>(filter?: Partial<T>) {
+  async readMany<T extends Document>(filter?: Partial<T>): Promise<T[] | null> {
     if (this.collection !== null) {
       const cursor = await this.collection.find<T>(filter ?? {});
       const foundDocuments = await cursor.toArray();
@@ -92,7 +103,7 @@ class MongoDbService {
   async update<T extends Document>(
     queryDocument: Partial<T>,
     updateDocument: Partial<T>
-  ) {
+  ): Promise<UpdateResult | null> {
     if (this.collection !== null) {
       const updatedResult = await this.collection.updateOne(queryDocument, {
         $set: updateDocument,
@@ -102,7 +113,9 @@ class MongoDbService {
     return null;
   }
 
-  async delete<T extends Document>(queryDocument: Partial<T>) {
+  async delete<T extends Document>(
+    queryDocument: Partial<T>
+  ): Promise<DeleteResult | null> {
     if (this.collection !== null) {
       const deletedDocument = await this.collection.deleteOne(queryDocument);
       return deletedDocument;
@@ -110,7 +123,7 @@ class MongoDbService {
     return null;
   }
 
-  async aggregate(pipeline: Document[]) {
+  async aggregate(pipeline: Document[]): Promise<Document[] | null> {
     if (this.collection !== null) {
       const cursor = await this.collection.aggregate(pipeline);
       const aggregatedDocuments = await cursor.toArray();
@@ -119,22 +132,32 @@ class MongoDbService {
     return null;
   }
 
-  async dropDB() {
-    return this.database?.dropDatabase();
+  async dropDB(): Promise<boolean> {
+    if (this.database === null) {
+      return false;
+    }
+    return this.database.dropDatabase();
   }
 
-  async dropCollection() {
-    if (this.collection !== null) {
+  async dropCollection(): Promise<boolean> {
+    if (this.collection !== null && this.database !== null) {
       return this.database?.dropCollection(this.collection.collectionName);
     }
-    return null;
+    return false;
   }
 
-  async createCollection(collectionName: string) {
-    this.database?.createCollection(collectionName);
+  async createCollection(
+    collectionName: string
+  ): Promise<false | Collection<Document>> {
+    if (this.database === null) {
+      return false;
+    }
+    return this.database.createCollection(collectionName);
   }
 
-  async createMany<T extends Document>(documents: T[]) {
+  private async createMany<T extends Document>(
+    documents: T[]
+  ): Promise<InsertManyResult<Document> | null> {
     if (this.collection !== null) {
       const createdResults = await this.collection.insertMany(documents);
       return createdResults;

@@ -1,3 +1,4 @@
+import type { UploadApiResponse } from 'cloudinary';
 import { v2 as cloudinary } from 'cloudinary';
 
 const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY!;
@@ -15,7 +16,7 @@ class CloudinaryService {
     });
   }
 
-  async uploadImage(file: any) {
+  async uploadImage(file: any): Promise<UploadApiResponse> {
     const b64 = Buffer.from(file.buffer).toString('base64');
     const dataURI = `data:${file.mimetype};base64,${b64}`;
 

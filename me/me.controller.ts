@@ -10,7 +10,7 @@ const upload = multer({ storage });
 const myUploadMiddleware = upload.single('avatar');
 
 class MeController {
-  async updateAvatar(req: Request, res: Response) {
+  async updateAvatar(req: Request, res: Response): Promise<Response> {
     try {
       // run Multer middleware to process file upload
       await runCallbackMiddlewareAsPromise(req, res, myUploadMiddleware);
@@ -41,7 +41,7 @@ class MeController {
     }
   }
 
-  async updateProfile(req: Request, res: Response) {
+  async updateProfile(req: Request, res: Response): Promise<Response> {
     const updatedResult = await UsersService.updateById(
       res.locals.jwt.userId,
       req.body
@@ -58,7 +58,7 @@ class MeController {
     return res.status(304).send();
   }
 
-  async deleteProfile(req: Request, res: Response) {
+  async deleteProfile(req: Request, res: Response): Promise<Response> {
     const { userId } = res.locals.jwt;
 
     const deleteResult = await UsersService.deleteById(userId);

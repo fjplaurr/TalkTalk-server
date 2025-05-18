@@ -6,7 +6,7 @@ class BodyValidationMiddleware {
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
-  ) {
+  ): express.Response | void {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
       return next();

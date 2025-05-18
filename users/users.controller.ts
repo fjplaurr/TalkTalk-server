@@ -7,32 +7,47 @@ import type {
 } from './types/dto';
 
 class UsersController {
-  async readById(req: RequestWithParams<{ id: string }>, res: Response) {
+  async readById(
+    req: RequestWithParams<{ id: string }>,
+    res: Response
+  ): Promise<Response> {
     const user = await UsersService.readById(req.params.id);
-    res.status(200).send(user);
+    return res.status(200).send(user);
   }
 
-  async readAll(req: Request, res: Response) {
+  async readAll(req: Request, res: Response): Promise<Response> {
     const users = await UsersService.readAll();
-    res.status(200).send(users);
+    return res.status(200).send(users);
   }
 
-  async create(req: RequestWithBody<CreateUserPayload>, res: Response) {
+  async create(
+    req: RequestWithBody<CreateUserPayload>,
+    res: Response
+  ): Promise<Response> {
     const userId = await UsersService.create(req.body);
-    res.status(201).send({ id: userId });
+    return res.status(201).send({ id: userId });
   }
 
-  async deleteById(req: RequestWithParams<{ id: string }>, res: Response) {
+  async deleteById(
+    req: RequestWithParams<{ id: string }>,
+    res: Response
+  ): Promise<Response> {
     await UsersService.deleteById(req.params.id);
-    res.status(204).send();
+    return res.status(204).send();
   }
 
-  async readFollowing(req: RequestWithParams<{ id: string }>, res: Response) {
+  async readFollowing(
+    req: RequestWithParams<{ id: string }>,
+    res: Response
+  ): Promise<Response> {
     const usersIds = await UsersService.readFollowing(req.params.id);
-    res.status(200).send(usersIds);
+    return res.status(200).send(usersIds);
   }
 
-  async followUser(req: RequestWithParams<{ id: string }>, res: Response) {
+  async followUser(
+    req: RequestWithParams<{ id: string }>,
+    res: Response
+  ): Promise<Response> {
     const { userId } = res.locals.jwt as { userId: string };
     const { id: followedUserId } = req.params;
 

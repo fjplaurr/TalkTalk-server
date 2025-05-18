@@ -1,10 +1,11 @@
 import argon2 from 'argon2';
 import UsersDao from '@users/users.dao';
+import type { UpdateResult, DeleteResult } from 'mongodb';
 import type { CreateUserPayload, PatchUserPayload } from './types/dto';
 import type { User } from './types/users';
 
 class UsersService {
-  async readAll() {
+  async readAll(): Promise<User[] | null> {
     return UsersDao.readAll();
   }
 
@@ -21,11 +22,14 @@ class UsersService {
     return UsersDao.create(resourceWithHashedPassword);
   }
 
-  async updateById(id: string, resource: PatchUserPayload) {
+  async updateById(
+    id: string,
+    resource: PatchUserPayload
+  ): Promise<UpdateResult | null> {
     return UsersDao.updateById(id, resource);
   }
 
-  async deleteById(id: string) {
+  async deleteById(id: string): Promise<DeleteResult | null> {
     return UsersDao.deleteById(id);
   }
 
@@ -33,11 +37,14 @@ class UsersService {
     return UsersDao.getUserByEmail(email);
   }
 
-  async readFollowing(id: string) {
+  async readFollowing(id: string): Promise<string[]> {
     return UsersDao.readFollowing(id);
   }
 
-  async followUser(user: User, followedUserId: string) {
+  async followUser(
+    user: User,
+    followedUserId: string
+  ): Promise<UpdateResult | null> {
     return UsersDao.updateById(user._id, {
       followingUsers: [...user.followingUsers, followedUserId],
     });

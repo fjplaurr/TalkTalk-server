@@ -18,7 +18,7 @@ export const createJWT = (payload: JwtPayload): string =>
   });
 
 class AuthController {
-  async login(req: Request, res: Response) {
+  async login(req: Request, res: Response): Promise<Response> {
     const { user } = res.locals as AuthMiddlewareLocals;
     const accessToken: string = createJWT({ userId: user._id });
     return res.status(201).send({ accessToken, user });

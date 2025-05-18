@@ -4,7 +4,11 @@ import type { Response, Request, NextFunction } from 'express';
 const jwtSecret: string = process.env.AUTHENTICATION_SECRET_KEY!;
 
 class JwtMiddleware {
-  validJWTNeeded(req: Request, res: Response, next: NextFunction) {
+  validJWTNeeded(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Response | void {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
