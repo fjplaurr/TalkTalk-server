@@ -8,16 +8,27 @@ import type {
   RequestWithParams,
   RequestWithParamsAndBody,
 } from './types/dto';
+import type { Post } from './types/posts';
 
 class PostsController {
   async readById(req: RequestWithParams<{ id: string }>, res: Response) {
-    const post = await PostsService.readById(req.params.id);
-    res.status(200).send(post);
+    const post: Post | null = await PostsService.readById(req.params.id);
+
+    if (post === null) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    return res.status(200).send(post);
   }
 
   async readAll(req: Request, res: Response) {
-    const posts = await PostsService.readAll();
-    res.status(200).send(posts);
+    const posts: Post[] | null = await PostsService.readAll();
+
+    if (posts === null || posts.length === 0) {
+      return res.status(404).json({ message: 'No posts found' });
+    }
+
+    return res.status(200).send(posts);
   }
 
   async create(req: RequestWithBody<CreatePostPayload>, res: Response) {
@@ -25,7 +36,7 @@ class PostsController {
       ...req.body,
       authorId: res.locals.jwt.userId,
     });
-    res.status(201).send({ id: postId });
+    return res.status(201).send({ id: postId });
   }
 
   async updateById(
@@ -86,7 +97,10 @@ class PostsController {
     res: Response
   ) {
     const posts = await PostsService.readPostsByUserId(req.params.id);
-    res.status(200).send(posts);
+    if (!posts || posts.length === 0) {
+      return res.status(404).json({ message: 'No posts found for this user' });
+    }
+    return res.status(200).send(posts);
   }
 }
 

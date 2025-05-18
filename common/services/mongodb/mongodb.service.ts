@@ -71,18 +71,18 @@ class MongoDbService {
     return null;
   }
 
-  async readOne<T, U extends Partial<T>>(queryDocument: U): Promise<T | null> {
+  async readOne<T extends Document>(filter: Partial<T>): Promise<T | null> {
     if (this.collection !== null) {
       const foundDocument: Promise<T | null> =
-        this.collection.findOne<T>(queryDocument);
+        this.collection.findOne<T>(filter);
       return foundDocument;
     }
     return null;
   }
 
-  async readMany(queryDocument: Partial<Document>) {
+  async readMany<T extends Document>(filter?: Partial<T>) {
     if (this.collection !== null) {
-      const cursor = await this.collection.find(queryDocument);
+      const cursor = await this.collection.find<T>(filter ?? {});
       const foundDocuments = await cursor.toArray();
       return foundDocuments;
     }

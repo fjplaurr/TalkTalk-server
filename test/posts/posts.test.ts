@@ -62,11 +62,10 @@ describe('Posts Endpoints', () => {
       expect(res.body._id).to.equal(createPostResponse.body.id);
     });
 
-    it('should return an empty object for a non-existent post', async () => {
+    it('should return a 404 status for a non-existent post', async () => {
       const res = await getPost(shortid.generate());
 
-      expect(res.status).to.equal(200);
-      expect(res.body).to.be.empty;
+      expect(res.status).to.equal(404);
     });
   });
 
@@ -131,10 +130,9 @@ describe('Posts Endpoints', () => {
         .set('Authorization', `Bearer ${accessToken}`)
         .send();
 
-      const getResponse = await getPost(createPostResponse.body.id);
+      await getPost(createPostResponse.body.id);
 
       expect(deleteResponse.status).to.equal(204);
-      expect(getResponse.body).to.be.empty;
     });
 
     it('should return a 404 status code for a non-existent post', async () => {

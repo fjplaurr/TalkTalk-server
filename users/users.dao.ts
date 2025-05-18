@@ -16,10 +16,9 @@ class UsersDao {
   }
 
   async readById(id: string): Promise<User | null> {
-    const document: User | null = await MongoDbService.readOne<
-      User,
-      Pick<User, '_id'>
-    >({ _id: id });
+    const document: User | null = await MongoDbService.readOne<User>({
+      _id: id,
+    });
 
     return document;
   }
@@ -56,10 +55,7 @@ class UsersDao {
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
-    const document: User | null = await MongoDbService.readOne<
-      User,
-      Pick<User, 'email'>
-    >({ email });
+    const document: User | null = await MongoDbService.readOne<User>({ email });
 
     return document;
   }

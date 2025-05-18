@@ -11,12 +11,12 @@ class PostsDao {
   }
 
   async readAll() {
-    const documents = await MongoDbService.readMany({});
+    const documents = await MongoDbService.readMany<Post>();
     return documents;
   }
 
   async readById(id: string) {
-    const document = await MongoDbService.readOne<Post, Pick<Post, '_id'>>({
+    const document = await MongoDbService.readOne<Post>({
       _id: id,
     });
     return document;
