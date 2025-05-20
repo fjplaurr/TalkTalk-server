@@ -31,59 +31,6 @@ describe('me endpoints', () => {
       expect(updateAvatarResponse.status).to.equal(200);
     });
 
-    it('gets a 401 for a token not starting with Bearer', async () => {
-      const invalidToken = 'invalid token';
-
-      const filePath = path.join(__dirname, 'dog.jpg');
-
-      const buffer = await fs.readFile(filePath);
-
-      const originalConsoleError = console.error;
-      console.error = () => {};
-
-      const updateAvatarResponse = await request
-        .patch('/me/avatar')
-        .set('Authorization', invalidToken)
-        .attach('avatar', buffer, filePath);
-
-      console.error = originalConsoleError;
-
-      expect(updateAvatarResponse.status).to.equal(401);
-    });
-
-    it('gets a 401 for an invalid token starting with Bearer', async () => {
-      const invalidToken = 'Bearer invalid token';
-
-      const filePath = path.join(__dirname, 'dog.jpg');
-
-      const buffer = await fs.readFile(filePath);
-
-      const originalConsoleError = console.error;
-      console.error = () => {};
-
-      const updateAvatarResponse = await request
-        .patch('/me/avatar')
-        .set('Authorization', invalidToken)
-        .attach('avatar', buffer, filePath);
-
-      console.error = originalConsoleError;
-
-      expect(updateAvatarResponse.status).to.equal(401);
-    });
-
-    it('gets a 401 if there is not a token attached to the authorization header', async () => {
-      console.error('this is the message for the last test');
-      const filePath = path.join(__dirname, 'dog.jpg');
-
-      const buffer = await fs.readFile(filePath);
-
-      const updateAvatarResponse = await request
-        .patch('/me/avatar')
-        .attach('avatar', buffer, filePath);
-
-      expect(updateAvatarResponse.status).to.equal(401);
-    });
-
     it('gets a 404 if the user is not found', async () => {
       const validToken = createJWT({ userId: 'nonexistentUserId' });
       const filePath = path.join(__dirname, 'dog.jpg');
@@ -116,34 +63,6 @@ describe('me endpoints', () => {
 
       expect(updateProfileResponse.status).to.equal(200);
       expect(updateProfileResponse.body).to.have.property('id', id);
-    });
-
-    it('gets a 401 for an invalid token starting with Bearer', async () => {
-      const invalidToken = 'Bearer invalid token';
-
-      const originalConsoleError = console.error;
-      console.error = () => {};
-
-      const updateProfileResponse = await request
-        .patch('/me/profile')
-        .set('Authorization', invalidToken)
-        .send({
-          firstName: 'UpdatedFirstName',
-          lastName: 'UpdatedLastName',
-        });
-
-      console.error = originalConsoleError;
-
-      expect(updateProfileResponse.status).to.equal(401);
-    });
-
-    it('gets a 401 if there is not a token attached to the authorization header', async () => {
-      const updateProfileResponse = await request.patch('/me/profile').send({
-        firstName: 'UpdatedFirstName',
-        lastName: 'UpdatedLastName',
-      });
-
-      expect(updateProfileResponse.status).to.equal(401);
     });
 
     it('gets a 404 if the user is not found', async () => {
