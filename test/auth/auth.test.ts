@@ -52,7 +52,12 @@ describe('auth endpoints', () => {
 
       const duplicateSignupResponse = await signup(signupPayload);
 
+      const found = duplicateSignupResponse.body.errors?.some(
+        (error: { msg: string }) => error.msg === 'Email already exists'
+      );
+
       expect(duplicateSignupResponse.status).to.equal(400);
+      expect(found).to.be.true;
     });
 
     it('fails to sign up if the email is invalid', async () => {
@@ -67,23 +72,6 @@ describe('auth endpoints', () => {
       const signupResponse = await signup(signupPayloadWithoutEmail);
 
       expect(signupResponse.status).to.equal(400);
-    });
-
-    it('returns an error if the email already exists', async () => {
-      const signupPayload = getSignupPayload();
-      await signup(signupPayload);
-      const signupPayloadWithDuplicateEmail = {
-        ...signupPayload,
-        email: signupPayload.email,
-      };
-      const signupResponse = await signup(signupPayloadWithDuplicateEmail);
-
-      const found = signupResponse.body.errors?.some(
-        (error: { msg: string }) => error.msg === 'Email already exists'
-      );
-
-      expect(signupResponse.status).to.equal(400);
-      expect(found).to.be.true;
     });
 
     it('fails to sign up if the password is invalid', async () => {
