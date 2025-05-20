@@ -6,9 +6,9 @@
   "scripts": {
     "lint": "npx eslint './**/*.ts'",
     "build": "npx tsc",
-    "start": "NODE_ENV=production node dist/index.js",
-    "start:dev": "NODE_ENV=development ts-node-dev -r tsconfig-paths/register index.ts",
-    "test": "NODE_ENV=development npx mocha --require ts-node/register --require tsconfig-paths/register 'test/**/*.test.ts' --watch --watch-files './**/*.ts'"
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "start:dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register index.ts",
+    "test": "cross-env NODE_ENV=development npx mocha --require ts-node/register --require tsconfig-paths/register 'test/**/*.test.ts' --watch --watch-files './**/*.ts'"
   },
   "keywords": [
     "node",
@@ -42,6 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",
     "chai": "^4.3.7",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
