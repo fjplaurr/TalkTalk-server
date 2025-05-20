@@ -12,6 +12,9 @@ class UsersController {
     res: Response
   ): Promise<Response> {
     const user = await UsersService.readById(req.params.id);
+    if (!user) {
+      return res.status(404).send();
+    }
     return res.status(200).send(user);
   }
 
@@ -26,14 +29,6 @@ class UsersController {
   ): Promise<Response> {
     const userId = await UsersService.create(req.body);
     return res.status(201).send({ id: userId });
-  }
-
-  async deleteById(
-    req: RequestWithParams<{ id: string }>,
-    res: Response
-  ): Promise<Response> {
-    await UsersService.deleteById(req.params.id);
-    return res.status(204).send();
   }
 
   async readFollowing(

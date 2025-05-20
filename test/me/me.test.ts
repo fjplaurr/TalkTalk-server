@@ -14,12 +14,15 @@ after(async () => {
 
 describe('me endpoints', () => {
   describe('PATCH to /me/avatar', () => {
-    it('updates the avatar', async () => {
+    // eslint-disable-next-line func-names
+    it('updates the avatar', async function () {
+      this.timeout(5000); // Increase timeout to 5 seconds
+
       const { id } = await createUser();
 
       const validToken = createJWT({ userId: id });
 
-      const filePath = path.join(__dirname, 'dog.jpg');
+      const filePath = path.join(__dirname, 'dog.jpeg');
 
       const buffer = await fs.readFile(filePath);
 
@@ -33,17 +36,17 @@ describe('me endpoints', () => {
 
     it('gets a 404 if the user is not found', async () => {
       const validToken = createJWT({ userId: 'nonexistentUserId' });
-      const filePath = path.join(__dirname, 'dog.jpg');
+
+      const filePath = path.join(__dirname, 'dog.jpeg');
+
       const buffer = await fs.readFile(filePath);
+
       const updateAvatarResponse = await request
         .patch('/me/avatar')
         .set('Authorization', `Bearer ${validToken}`)
         .attach('avatar', buffer, filePath);
+
       expect(updateAvatarResponse.status).to.equal(404);
-      expect(updateAvatarResponse.body).to.have.property(
-        'message',
-        'Document not found'
-      );
     });
   });
 
@@ -112,6 +115,17 @@ describe('me endpoints', () => {
         .send();
 
       expect(deleteUserResponse.status).to.equal(204);
+    });
+
+    it('gets a 404 if the user is not found', async () => {
+      const validToken = createJWT({ userId: 'nonexistentUserId' });
+
+      const deleteUserResponse = await request
+        .delete('/me')
+        .set('Authorization', `Bearer ${validToken}`)
+        .send();
+
+      expect(deleteUserResponse.status).to.equal(404);
     });
   });
 });

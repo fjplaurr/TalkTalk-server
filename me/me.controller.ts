@@ -63,7 +63,7 @@ class MeController {
 
     const deleteResult = await UsersService.deleteById(userId);
 
-    if (!deleteResult) {
+    if (!deleteResult || deleteResult.deletedCount === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
 

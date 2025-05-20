@@ -23,11 +23,16 @@ describe('users endpoints', () => {
       expect(getUserResponse.status).to.equal(200);
     });
 
+    it('returns 404 if the user does not exist', async () => {
+      const res = await request.get(`/users/${shortid.generate()}`).send();
+
+      expect(res.status).to.equal(404);
+    });
+
     it('returns an empty object if the user does not exist', async () => {
       const res = await request.get(`/users/${shortid.generate()}`).send();
 
-      expect(res.status).to.equal(200);
-      expect(res.body).to.be.empty;
+      expect(res.status).to.equal(404);
     });
   });
 

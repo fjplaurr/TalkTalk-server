@@ -1,5 +1,6 @@
 import type { UploadApiResponse } from 'cloudinary';
 import { v2 as cloudinary } from 'cloudinary';
+import type { Express } from 'express';
 
 const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY!;
 const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET!;
@@ -16,7 +17,7 @@ class CloudinaryService {
     });
   }
 
-  async uploadImage(file: any): Promise<UploadApiResponse> {
+  async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse> {
     const b64 = Buffer.from(file.buffer).toString('base64');
     const dataURI = `data:${file.mimetype};base64,${b64}`;
 
