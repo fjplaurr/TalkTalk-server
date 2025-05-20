@@ -5,6 +5,7 @@ import type {
   RequestWithBody,
   RequestWithParams,
 } from './types/dto';
+import { sanitizeUser, sanitizeUsers } from './utils';
 
 class UsersController {
   async readById(
@@ -15,12 +16,12 @@ class UsersController {
     if (!user) {
       return res.status(404).send();
     }
-    return res.status(200).send(user);
+    return res.status(200).send(sanitizeUser(user));
   }
 
   async readAll(req: Request, res: Response): Promise<Response> {
     const users = await UsersService.readAll();
-    return res.status(200).send(users);
+    return res.status(200).send(sanitizeUsers(users));
   }
 
   async create(
