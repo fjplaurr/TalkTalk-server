@@ -12,7 +12,6 @@
    - [Authentication Endpoints](#authentication-endpoints)
    - [Me Endpoints](#me-endpoints)
    - [MongoDB](#mongodb)
-   - [Cloudinary](#cloudinary)
 4. [Examples of API Requests and Responses](#examples-of-api-requests-and-responses)
    - [Users Endpoints](#users-endpoints-1)
    - [Posts Endpoints](#posts-endpoints-1)
@@ -87,11 +86,9 @@ Choose the method that suits your preference and workflow.
 | ---------- | ------------------------ | --------------------------------------- |
 | GET        | /users                   | Retrieve all users                      |
 | GET        | /users/:id               | Retrieve a user                         |
-| POST       | /users                   | Save a new user                         |
 | GET        | /users/:id/posts         | Retrieve all posts from a user          |
-| PATCH      | /users/:id               | Edit a user                             |
-| DELETE     | /users/:id               | Delete a user                           |
 | GET        | /users/:id/following     | Retrieve users being followed by a user |
+| POST       | /users/:id/follow        | Follow a user                           |
 
 #### <b><u>Posts Endpoints</u></b>
 
@@ -105,32 +102,27 @@ Choose the method that suits your preference and workflow.
 
 #### <b><u>Authentication Endpoints</u></b>
 
-| HTTP Verbs | Endpoints                  | Action                                      |
-| ---------- | -------------------------- | ------------------------------------------- |
-| POST       | /login | Authenticate a user with email and password |
-| POST       | /signup                    | Sign up a new user                          |
+| HTTP Verbs | Endpoints         | Action                                      |
+| ---------- | ---------------- | ------------------------------------------- |
+| POST       | /auth/login      | Authenticate a user with email and password |
+| POST       | /auth/signup     | Sign up a new user                          |
 
 #### <b><u>Me Endpoints</u></b>
 
-The <b>Me</b> endpoints require the user to be authenticated with a Bearer token. 
-
-| HTTP Verbs | Endpoints       | Action                           |
-| ---------- | --------------- | -------------------------------- |
-| POST       | /me/avatar      | Edit the authenticated user's avatar |
-| PATCH      | /me/profile     | Update the authenticated user's profile |
+| HTTP Verbs | Endpoints     | Action                                 |
+| ---------- | -------------| ---------------------------------------|
+| PATCH      | /me/avatar   | Edit the authenticated user's avatar    |
+| PATCH      | /me/profile  | Update the authenticated user's profile |
+| DELETE     | /me          | Delete the authenticated user           |
 
 #### <b><u>MongoDB</u></b>
+
+The MongoDB endpoints are only available in the development environment for local testing.
 
 | HTTP Verbs | Endpoints     | Action                   |
 | ---------- | ------------- | ------------------------ |
 | POST       | /mongodb/drop | Drop the entire database |
 | POST       | /mongodb/seed | Seed some demo data      |
-
-#### <b><u>Cloudinary</u></b>
-
-| HTTP Verbs | Endpoints     | Action                   |
-| ---------- | ------------- | ------------------------ |
-| POST       | /cloudinary/upload | Upload an image |
 
 ## Examples of API Requests and Responses
 
