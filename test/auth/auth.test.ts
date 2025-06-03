@@ -147,4 +147,12 @@ describe('auth endpoints', () => {
       expect(accessToken).to.be.a('string');
     });
   });
+
+  describe('Google OAuth endpoints', () => {
+    it('GET /auth/google should redirect to Google OAuth', async () => {
+      const res = await request.get('/auth/google');
+      expect(res.status).to.equal(302);
+      expect(res.headers.location).to.include('accounts.google.com');
+    });
+  });
 });
