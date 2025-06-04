@@ -32,7 +32,7 @@ router.get(
   '/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/auth/login',
-    session: true,
+    session: false,
   }),
   AuthController.googleSignup
 );

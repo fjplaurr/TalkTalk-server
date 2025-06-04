@@ -7,7 +7,6 @@ if (process.env.NODE_ENV === 'development') {
 import express from 'express';
 import cors from 'cors';
 import type http from 'http';
-import session from 'express-session';
 import passport from './auth/google.passport';
 import usersRoutes from './users/users.routes';
 import meRoutes from './me/me.routes';
@@ -22,15 +21,7 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(
-  session({
-    secret: process.env.AUTHENTICATION_SECRET_KEY!,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 app.use('/users', usersRoutes);

@@ -39,9 +39,6 @@ class AuthController {
   async googleSignup(req: Request, res: Response): Promise<Response | void> {
     // User is attached to req.user by passport
     const user = req.user as User;
-    if (!user) {
-      return res.redirect('/auth/login');
-    }
     const accessToken: string = createJWT({ userId: user._id });
     return res.status(201).send({ accessToken, user: sanitizeUser(user) });
   }
